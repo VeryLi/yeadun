@@ -3,7 +3,10 @@ package SerdeTest;
 import com.yeadun.bigdata.platform.util.LogUtil;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.channels.SocketChannel;
 
 /**
  * Created by chen on 16-11-30.
@@ -12,35 +15,27 @@ public class Client {
 
     private static LogUtil logger = new LogUtil(Client.class);
     public static void main(String[] args) throws Exception{
-        Thread th1 = new Thread(new client(9999));
-        Thread th2 = new Thread(new client(9999));
-        th1.start();
-        Thread.sleep(5000);
-        th2.start();
+        client(9999);
+        client(9999);
     }
 
-    private static class client implements Runnable{
+    public static void client (int port)  {
 
-        private int port;
-        private Socket socket;
-        client (int port){
-            this.port = port;
-        }
-        public void run() {
+        SocketChannel sc = null;
+        try {
+            sc = SocketChannel.open();
+            sc.configureBlocking(false);
+            sc.connect(new InetSocketAddress("localhost", port));
+            logger.info("Client : " + sc.socket().getInetAddress() + ", prot : " + sc.socket().getPort());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }  finally {
             try {
-                this.socket = new Socket("localhost", this.port);
-                while(true){
-
-                }
+                sc.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
-                try {
-                    this.socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         }
+
     }
 }
