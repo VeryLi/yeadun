@@ -10,11 +10,11 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>org.apache.thrift</groupId>
-            <artifactId>libthrift</artifactId>
-            <version>0.9.3</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.thrift</groupId>-->
+            <!--<artifactId>libthrift</artifactId>-->
+            <!--<version>0.9.3</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.esotericsoftware</groupId>
             <artifactId>kryo</artifactId>
@@ -24,6 +24,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.12</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty</artifactId>
+            <version>3.10.6.Final</version>
         </dependency>
     </dependencies>
     <build>
@@ -54,7 +59,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <outputDirectory>lib</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
