@@ -2,6 +2,7 @@ package SerdeTest;
 
 import com.yeadun.bigdata.platform.protocol.MessageType;
 import com.yeadun.bigdata.platform.protocol.Protocol;
+import com.yeadun.bigdata.platform.protocol.messages.OtherMessage;
 import com.yeadun.bigdata.platform.server.PlatformConf;
 import com.yeadun.bigdata.platform.server.PlatformDefaultProps;
 import com.yeadun.bigdata.platform.util.LogUtil;
@@ -74,10 +75,12 @@ public class Test {
             logger.info(conf._data_delimiter.getStrValue());
             logger.info(conf._buffer_size.getIntValue() + "");
             Protocol prot = new Protocol(MessageType.OTHER);
-            prot.readMsg();
+            prot.readMsg().write("this is a test...");
+            logger.info((String)(prot.readMsg()).read());
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }
