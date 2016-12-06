@@ -1,6 +1,5 @@
 package com.yeadun.bigdata.platform.server;
 
-import com.yeadun.bigdata.platform.protocol.KryoSer;
 import com.yeadun.bigdata.platform.util.LogUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
@@ -20,9 +19,9 @@ import io.netty.handler.codec.string.StringDecoder;
  */
 public class PlatformServer implements Runnable {
 
-    private String DELIMITER = "$_";
     private LogUtil logger = new LogUtil(PlatformServer.class);
-    private String hostName = "localhost";
+    private String DELIMITER = PlatformDefaultProps.DATA_DELIMITER.getStrValue();
+    private String hostName = PlatformDefaultProps.SERVER_HOST.getStrValue();
     private int port;
 
 

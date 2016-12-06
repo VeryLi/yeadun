@@ -8,19 +8,20 @@ import java.util.Map;
  * Created by chen on 16-12-5.
  */
 public class PropUtil {
+
     private LogUtil logger = new LogUtil(PropUtil.class);
-    private String ConfPath = "conf/platform.conf";
     private File confFile;
     private BufferedReader confReader;
-    public PropUtil() throws IOException {
-        this.confFile = new File(this.ConfPath);
+
+    public PropUtil(String confPath) throws IOException {
+        this.confFile = new File(confPath);
         if(!this.confFile.isFile() || this.confFile == null){
-            this.logger.err("conf/platform.conf dose not exist.");
-            throw new IOException("conf/platform.conf dose not exist.");
+            this.logger.err(confPath + " dose not exist.");
+            throw new IOException(confPath + " dose not exist.");
         }
     }
 
-    public void init(){
+    private void init(){
         try {
             this.confReader = new BufferedReader(new FileReader(this.confFile));
         } catch (FileNotFoundException e) {
@@ -29,14 +30,20 @@ public class PropUtil {
         }
     }
 
+    private boolean check(String line) {
+        return !(line.startsWith("#") || line.equals("")) && line.split("=").length == 2;
+    }
+
     public String getPropWithKey(String key){
         init();
         String data = null;
         try {
             while((data = this.confReader.readLine()) != null){
-                String k = data.split("=")[0].trim();
-                if(k.equals(key)){
-                    return data.split("=")[1].trim();
+                if(check(data)) {
+                    String k = data.split("=")[0].trim();
+                    if (k.equals(key)) {
+                        return data.split("=")[1].trim();
+                    }
                 }
             }
         } catch (IOException e) {
@@ -60,7 +67,9 @@ public class PropUtil {
         String temp;
         try {
             while((temp = this.confReader.readLine()) != null){
-                data.put(temp.split("=")[0].trim(), temp.split("=")[1].trim());
+                if(check(temp)){
+                    data.put(temp.split("=")[0].trim(), temp.split("=")[1].trim());
+                }
             }
         } catch (IOException e) {
             this.logger.err(e.getMessage());

@@ -1,19 +1,13 @@
 package SerdeTest;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.ByteBufferInput;
-import com.esotericsoftware.kryo.io.ByteBufferOutput;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
+import com.yeadun.bigdata.platform.server.PlatformConf;
+import com.yeadun.bigdata.platform.server.PlatformDefaultProps;
 import com.yeadun.bigdata.platform.util.LogUtil;
 import com.yeadun.bigdata.platform.util.PropUtil;
-import io.netty.buffer.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by chen on 16-12-5.
@@ -63,16 +57,25 @@ public class Test {
         }*/
 
         try {
-            PropUtil p = new PropUtil();
-            String key = "server.port";
-            logger.info(key + " => " + p.getPropWithKey(key) );
-            logger.info(key + " -> " + p.getPropWithKey(key) + " -> " + (Integer.parseInt(p.getPropWithKey(key))+1));
+            PropUtil p = new PropUtil("conf/platform.conf");
+            String key = "asfasfd";
+            logger.info("---->" + key + " => " + p.getPropWithKey(key) );
             Map<String, String> a = p.getAllPorps();
             Iterator<String> keys = a.keySet().iterator();
             while(keys.hasNext()){
                 String k = keys.next();
                 logger.info(k + " => " + a.get(k));
             }
+            logger.info("-------------------------------");
+
+
+            PlatformConf conf = new PlatformConf();
+            logger.info(conf._server_host.getStrValue());
+            logger.info(conf._server_port.getIntValue() + "");
+            logger.info(conf._data_delimiter.getStrValue());
+            logger.info(conf._buffer_size.getIntValue() + "");
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -6,26 +6,52 @@ import com.yeadun.bigdata.platform.util.PropUtil;
 import java.io.IOException;
 
 /**
- * Created by chen on 16-12-5.
+ * Created by chen on 16-12-6.
  */
 public class PlatformConf {
-    
+
     private LogUtil logger = new LogUtil(PlatformConf.class);
     private PropUtil propUtil;
-    private String srvHost = "localhost";
-    private int srvPort = 9999;
+    private boolean usePlatformConf = true;
 
-    public PlatformConf(){
+    // platform config
+    public PlatformDefaultProps _server_host       = PlatformDefaultProps.SERVER_HOST;
+    public PlatformDefaultProps _data_delimiter    = PlatformDefaultProps.DATA_DELIMITER;
+    public PlatformDefaultProps    _server_port    = PlatformDefaultProps.SERVER_PORT;
+    public PlatformDefaultProps    _buffer_size    = PlatformDefaultProps.BUFFER_SIZE;
+
+    public PlatformConf(boolean usePlatformConf){
         try {
-            this.propUtil = new PropUtil();
+            String confPath = "conf/platform.conf";
+            this.usePlatformConf = usePlatformConf;
+            this.propUtil = new PropUtil(confPath);
         } catch (IOException e) {
-            logger.err(e.getMessage());
+            this.logger.err(e.getMessage());
             e.printStackTrace();
         }
+        if (this.usePlatformConf){
+            updateAllProps();
+        }
+    }
+    public PlatformConf(){
+        new PlatformConf(true);
     }
 
-    public void init(){
-
+    private PlatformConf updateFromConfigure(PlatformDefaultProps prop){
+        String key = prop.name().replace("_", ".").toLowerCase();
+        String value = this.propUtil.getPropWithKey(key);
+        if(value != null){
+            prop.setValue(value);
+        }
+        this.logger.debug(prop.name() + " => " + prop.getValue());
+        return this;
     }
-    
+
+    private PlatformConf updateAllProps(){
+        PlatformDefaultProps[] ps = PlatformDefaultProps.values();
+        for (PlatformDefaultProps p : ps){
+            updateFromConfigure(p);
+        }
+        return this;
+    }
 }
