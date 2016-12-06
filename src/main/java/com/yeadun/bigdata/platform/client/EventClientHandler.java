@@ -1,5 +1,6 @@
 package com.yeadun.bigdata.platform.client;
 
+import com.yeadun.bigdata.platform.server.PlatformConf;
 import com.yeadun.bigdata.platform.util.LogUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -11,9 +12,11 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 public class EventClientHandler extends ChannelInboundHandlerAdapter {
 
     private LogUtil logger = new LogUtil(EventClientHandler.class);
+    private PlatformConf conf = new PlatformConf();
+    private String delimiter = conf._data_delimiter.getStrValue();
     @Override
     public void channelActive(ChannelHandlerContext ctx){
-        String body = "this is test.$";
+        String body = "this is test." + delimiter;
         logger.info("client : " + body + " [1. client send request]");
         ctx.writeAndFlush(Unpooled.copiedBuffer(body.getBytes()));
     }

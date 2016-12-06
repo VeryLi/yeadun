@@ -19,6 +19,6 @@ public class Server {
     public static void main(String[] args) throws Exception{
         int port = 9999;
         logger.info("---- start server. ----");
-        new PlatformServer(port).run();
+        new PlatformServer().run();
     }
 }

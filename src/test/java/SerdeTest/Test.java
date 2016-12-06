@@ -1,5 +1,7 @@
 package SerdeTest;
 
+import com.yeadun.bigdata.platform.protocol.MessageType;
+import com.yeadun.bigdata.platform.protocol.Protocol;
 import com.yeadun.bigdata.platform.server.PlatformConf;
 import com.yeadun.bigdata.platform.server.PlatformDefaultProps;
 import com.yeadun.bigdata.platform.util.LogUtil;
@@ -58,8 +60,6 @@ public class Test {
 
         try {
             PropUtil p = new PropUtil("conf/platform.conf");
-            String key = "asfasfd";
-            logger.info("---->" + key + " => " + p.getPropWithKey(key) );
             Map<String, String> a = p.getAllPorps();
             Iterator<String> keys = a.keySet().iterator();
             while(keys.hasNext()){
@@ -68,17 +68,16 @@ public class Test {
             }
             logger.info("-------------------------------");
 
-
             PlatformConf conf = new PlatformConf();
             logger.info(conf._server_host.getStrValue());
             logger.info(conf._server_port.getIntValue() + "");
             logger.info(conf._data_delimiter.getStrValue());
             logger.info(conf._buffer_size.getIntValue() + "");
-
+            Protocol prot = new Protocol(MessageType.OTHER);
+            prot.readMsg();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

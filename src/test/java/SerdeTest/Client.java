@@ -19,6 +19,6 @@ public class Client {
 
         int port = 9999;
         String host = "localhost";
-        new PlatformClient(host, port).run();
+        new PlatformClient().run();
     }
 }

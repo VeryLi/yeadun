@@ -12,24 +12,28 @@ public class PlatformConf {
 
     private LogUtil logger = new LogUtil(PlatformConf.class);
     private PropUtil propUtil;
-    private boolean usePlatformConf = true;
 
     // platform config
-    public PlatformDefaultProps _server_host       = PlatformDefaultProps.SERVER_HOST;
-    public PlatformDefaultProps _data_delimiter    = PlatformDefaultProps.DATA_DELIMITER;
-    public PlatformDefaultProps    _server_port    = PlatformDefaultProps.SERVER_PORT;
-    public PlatformDefaultProps    _buffer_size    = PlatformDefaultProps.BUFFER_SIZE;
+    public PlatformDefaultProps _server_host    = PlatformDefaultProps.SERVER_HOST;
+    public PlatformDefaultProps _data_delimiter = PlatformDefaultProps.DATA_DELIMITER;
+    public PlatformDefaultProps _server_port    = PlatformDefaultProps.SERVER_PORT;
+    public PlatformDefaultProps _buffer_size    = PlatformDefaultProps.BUFFER_SIZE;
+    public PlatformDefaultProps _client_connect_timeout = PlatformDefaultProps.CLIENT_CONNECT_TIMEOUT;
+    public PlatformDefaultProps _so_backlog     = PlatformDefaultProps.SO_BACKLOG;
+    public PlatformDefaultProps _ser_buffer_size = PlatformDefaultProps.SER_BUFFER_SIZE;
+    public PlatformDefaultProps _deser_buffer_size = PlatformDefaultProps.DESER_BUFFER_SIZE;
 
     public PlatformConf(boolean usePlatformConf){
+        boolean usePlatformConf1 = true;
         try {
             String confPath = "conf/platform.conf";
-            this.usePlatformConf = usePlatformConf;
+            usePlatformConf1 = usePlatformConf;
             this.propUtil = new PropUtil(confPath);
         } catch (IOException e) {
             this.logger.err(e.getMessage());
             e.printStackTrace();
         }
-        if (this.usePlatformConf){
+        if (usePlatformConf1){
             updateAllProps();
         }
     }

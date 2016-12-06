@@ -20,18 +20,12 @@ import io.netty.handler.codec.string.StringDecoder;
 public class PlatformServer implements Runnable {
 
     private LogUtil logger = new LogUtil(PlatformServer.class);
-    private String DELIMITER = PlatformDefaultProps.DATA_DELIMITER.getStrValue();
-    private String hostName = PlatformDefaultProps.SERVER_HOST.getStrValue();
-    private int port;
-
-
-    public PlatformServer(int port){
-        this.port = port;
-    }
-    public PlatformServer(int port, String hostName){
-        this.port = port;
-        this.hostName = hostName;
-    }
+    private PlatformConf conf = new PlatformConf();
+    private String delimiter = conf._data_delimiter.getStrValue();
+    private String hostName = conf._server_host.getStrValue();
+    private int port = conf._server_port.getIntValue();
+    private int bufferSize = conf._buffer_size.getIntValue();
+    private int soBacklog = conf._so_backlog.getIntValue();
 
     public void run(){
         EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -41,13 +35,13 @@ public class PlatformServer implements Runnable {
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ByteBuf delimiter = Unpooled.copiedBuffer(DELIMITER.getBytes());
-                        ch.pipeline().addLast(new DelimiterBasedFrameDecoder(2048, delimiter));
-                        ch.pipeline().addLast(new StringDecoder());
+                        ByteBuf delimiterByte = Unpooled.copiedBuffer(delimiter.getBytes());
+                        ch.pipeline().addLast(new DelimiterBasedFrameDecoder(bufferSize, delimiterByte));
+//                        ch.pipeline().addLast(new StringDecoder());
                         ch.pipeline().addLast(new EventServerHandler());
                     }
                 })
-                .option(ChannelOption.SO_BACKLOG, 100)
+                .option(ChannelOption.SO_BACKLOG, soBacklog)
                 .option(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childOption(ChannelOption.TCP_NODELAY, true);
@@ -56,6 +50,7 @@ public class PlatformServer implements Runnable {
             // Bind and start to accept incoming connections.
             logger.info("platform is binding on " + this.hostName + ", port is " + this.port);
             ChannelFuture cf = srvBoot.bind(this.hostName, this.port).sync();
+            logger.info("platform server start finish.");
 
             // Wait until the server socket is closed.
             cf.channel().closeFuture().sync();
