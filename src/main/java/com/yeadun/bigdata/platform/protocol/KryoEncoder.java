@@ -18,7 +18,7 @@ public class KryoEncoder extends MessageToByteEncoder<Protocol>{
     }
 
     protected void encode(ChannelHandlerContext ctx, Protocol msg, ByteBuf out) throws Exception {
-        byte[] msgByte = this.pool.run(new KryoEncodeCallback(msg));
+        ByteBuf msgByte = this.pool.run(new KryoEncodeCallback(msg));
         out.writeBytes(msgByte);
     }
 }

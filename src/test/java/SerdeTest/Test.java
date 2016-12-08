@@ -1,7 +1,16 @@
 package SerdeTest;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.pool.KryoCallback;
+import com.esotericsoftware.kryo.pool.KryoFactory;
+import com.esotericsoftware.kryo.pool.KryoPool;
+import com.sun.xml.internal.fastinfoset.sax.SystemIdResolver;
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import com.sun.xml.internal.ws.api.WSService;
 import com.sun.xml.internal.ws.util.ByteArrayBuffer;
+import com.yeadun.bigdata.platform.protocol.KryoPoolFactory;
 import com.yeadun.bigdata.platform.util.LogUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -41,21 +50,57 @@ public class Test {
     }
 
     public static void main(String[] args){
-/*        User user = new User();
-        Kryo kryo = new Kryo();
-        kryo.setReferences(false);
-        kryo.register(User.class, User.class.hashCode());
-        Output out = new Output(1024);
-        kryo.writeClassAndObject(out, user);
-        out.flush();
+        KryoPool pool = new KryoPool.Builder(new KryoFactory() {
+            public Kryo create() {
+                Kryo kryo = new Kryo();
+                kryo.setReferences(false);
+                kryo.register(User.class);
+                return kryo;
+            }
+        }).build();
+        ByteBuf out = pool.run(new KryoCallback<ByteBuf>() {
+            User user = new User();
+            public ByteBuf execute(Kryo kryo) {
+                Output out = new Output(10);
+                kryo.writeClassAndObject(out, user);
+                out.flush();
+                byte[] res = out.getBuffer();
+//                for(byte b : res){
+//                    System.out.print(b + " ");
+//                }
+                System.out.println();
 
-        Input in = new Input(out.toBytes());
-        logger.info("in data ===> " + in.getBuffer().length);
-        Object obj = kryo.readClassAndObject(in);
+                ByteBuf bbf = Unpooled.buffer(4 + res.length);
+                bbf.writeInt(res.length);
+                bbf.writeBytes(res);
+                out.close();
+                return bbf;
+            }
+        });
+//        User user = new User();
+//        Kryo kryo = new Kryo();
+//        kryo.setReferences(false);
+//        kryo.register(User.class, User.class.hashCode());
+//        Output out = new Output(1024);
+//        kryo.writeClassAndObject(out, user);
+//        out.flush();
+//        System.out.println(out.getBuffer().length);
+
+        ByteBuf res = out.copy(4, out.array().length - 4);
+//        for(byte b : res.array()){
+//            System.out.print(b + " ");
+//        }
+        System.out.println();
+        Input in = new Input();
+        in.setBuffer(res.array());
+//        Kryo kryo = new Kryo();
+//        kryo.register(User.class);
+        Object obj = pool.borrow().readClassAndObject(in);
+        in.close();
         if(obj instanceof User){
             User user2 = (User) obj;
             System.out.println(user2.getName() + " == " + user2.getAge());
-        }*/
+        }
 
 /*        try {
             PropUtil p = new PropUtil("conf/platform.conf");
@@ -81,7 +126,7 @@ public class Test {
         }*/
 
 
-        int a = 1132323;
+  /*      int a = 1132323;
         ByteBuffer buf = ByteBuffer.allocate(100);
         buf.putInt(a);
         int headlength = buf.limit();
@@ -102,7 +147,7 @@ public class Test {
             System.out.print(b + " ");
         }
         System.out.println();
-        System.out.println(bbf.copy(0, 4).readInt());
+        System.out.println(bbf.copy(0, 4).readInt());*/
 
     }
 }

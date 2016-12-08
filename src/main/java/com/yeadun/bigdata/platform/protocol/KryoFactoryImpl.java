@@ -17,8 +17,7 @@ class KryoFactoryImpl implements KryoFactory {
 
     public Kryo create() {
         Kryo kryo = new Kryo();
-        kryo.setReferences(false);
-        kryo.register(Protocol.class, Protocol.class.hashCode());
+        kryo.register(Protocol.class);
         this.logger.info("created a kryo instance for serialization");
         return kryo;
     }

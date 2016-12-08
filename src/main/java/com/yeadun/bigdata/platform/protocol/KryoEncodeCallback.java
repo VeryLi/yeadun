@@ -7,7 +7,7 @@ import com.yeadun.bigdata.platform.util.LogUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
-class KryoEncodeCallback implements KryoCallback<byte[]> {
+class KryoEncodeCallback implements KryoCallback<ByteBuf> {
 
     private LogUtil logger = new LogUtil(KryoEncodeCallback.class);
     private Output out;
@@ -15,24 +15,22 @@ class KryoEncodeCallback implements KryoCallback<byte[]> {
 
     KryoEncodeCallback(Protocol msg){
         this.msg = msg;
-        this.out = new Output(2048);
+        this.out = new Output(1024);
     }
 
-    public byte[] execute(Kryo kryo) {
+    public ByteBuf execute(Kryo kryo) {
         logger.info("Kryo Encode Callback get protocol and executing...");
-        byte[] res;
 
         logger.info("xxxx");
         kryo.writeClassAndObject(out, msg);
         logger.info("yyyy");
-
+        out.flush();
         byte[] msgBody = out.getBuffer();
         int msgLength = msgBody.length;
         ByteBuf bbf = Unpooled.buffer(4 + msgLength);
         bbf.writeInt(msgLength);
         bbf.writeBytes(msgBody);
-        res = bbf.copy(4, msgLength).array();
-        logger.info("serialization byte length -> " + res.length);
-        return res;
+        out.close();
+        return bbf;
     }
 }
