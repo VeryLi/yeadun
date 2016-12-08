@@ -1,4 +1,4 @@
-package com.yeadun.bigdata.platform.server;
+package com.yeadun.bigdata.platform;
 
 import com.yeadun.bigdata.platform.util.LogUtil;
 import com.yeadun.bigdata.platform.util.PropUtil;
@@ -14,14 +14,11 @@ public class PlatformConf {
     private PropUtil propUtil;
 
     // platform config
-    public PlatformDefaultProps _server_host    = PlatformDefaultProps.SERVER_HOST;
-    public PlatformDefaultProps _data_delimiter = PlatformDefaultProps.DATA_DELIMITER;
-    public PlatformDefaultProps _server_port    = PlatformDefaultProps.SERVER_PORT;
-    public PlatformDefaultProps _buffer_size    = PlatformDefaultProps.BUFFER_SIZE;
-    public PlatformDefaultProps _client_connect_timeout = PlatformDefaultProps.CLIENT_CONNECT_TIMEOUT;
-    public PlatformDefaultProps _so_backlog     = PlatformDefaultProps.SO_BACKLOG;
-    public PlatformDefaultProps _ser_buffer_size = PlatformDefaultProps.SER_BUFFER_SIZE;
-    public PlatformDefaultProps _deser_buffer_size = PlatformDefaultProps.DESER_BUFFER_SIZE;
+    public PlatformDefaultConf _server_host    = PlatformDefaultConf.SERVER_HOST;
+    public PlatformDefaultConf _server_port    = PlatformDefaultConf.SERVER_PORT;
+    public PlatformDefaultConf _client_connect_timeout = PlatformDefaultConf.CLIENT_CONNECT_TIMEOUT;
+    public PlatformDefaultConf _so_backlog     = PlatformDefaultConf.SO_BACKLOG;
+    public PlatformDefaultConf _kryo_max_total = PlatformDefaultConf.KRYO_MAX_TOTAL;
 
     public PlatformConf(boolean usePlatformConf){
         boolean usePlatformConf1 = true;
@@ -41,7 +38,7 @@ public class PlatformConf {
         new PlatformConf(true);
     }
 
-    private PlatformConf updateFromConfigure(PlatformDefaultProps prop){
+    private PlatformConf updateFromConfigure(PlatformDefaultConf prop){
         String key = prop.name().replace("_", ".").toLowerCase();
         String value = this.propUtil.getPropWithKey(key);
         if(value != null){
@@ -52,8 +49,8 @@ public class PlatformConf {
     }
 
     private PlatformConf updateAllProps(){
-        PlatformDefaultProps[] ps = PlatformDefaultProps.values();
-        for (PlatformDefaultProps p : ps){
+        PlatformDefaultConf[] ps = PlatformDefaultConf.values();
+        for (PlatformDefaultConf p : ps){
             updateFromConfigure(p);
         }
         return this;

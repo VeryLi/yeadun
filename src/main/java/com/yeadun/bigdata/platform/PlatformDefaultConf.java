@@ -1,21 +1,20 @@
-package com.yeadun.bigdata.platform.server;
+package com.yeadun.bigdata.platform;
 
 /**
  * Created by chen on 16-12-6.
  */
-public enum PlatformDefaultProps {
+public enum PlatformDefaultConf {
     // platform properties
     SERVER_HOST("localhost"),
     SERVER_PORT("9999"),
-    BUFFER_SIZE("2048"),
-    DATA_DELIMITER("$_"),
     SO_BACKLOG("100"),
     CLIENT_CONNECT_TIMEOUT("5000"),
     SER_BUFFER_SIZE("2048"),
-    DESER_BUFFER_SIZE("2048");
+    DESER_BUFFER_SIZE("2048"),
+    KRYO_MAX_TOTAL("100");
 
     private String value;
-    PlatformDefaultProps(String value){
+    PlatformDefaultConf(String value){
         this.value = value;
     }
 
@@ -28,14 +27,18 @@ public enum PlatformDefaultProps {
     }
 
     public int getIntValue(){
-        return Integer.parseInt((String) this.value);
+        return Integer.parseInt(this.value);
     }
 
     public float getFloatValue(){
         return Float.parseFloat((String) this.value);
     }
 
-    public PlatformDefaultProps setValue(String value){
+    public long getLongValue(){
+        return Long.parseLong(this.value);
+    }
+
+    public PlatformDefaultConf setValue(String value){
         this.value = value;
         return this;
     }

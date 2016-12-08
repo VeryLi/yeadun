@@ -1,11 +1,6 @@
 package com.yeadun.bigdata.platform.protocol;
 
-import com.yeadun.bigdata.platform.protocol.messages.*;
 import com.yeadun.bigdata.platform.util.LogUtil;
-
-/**
- * Created by chen on 16-12-6.
- */
 
 public class Protocol {
 
@@ -30,12 +25,109 @@ public class Protocol {
         return this.type;
     }
 
-    public Message readMsg(){
-        return this.msg;
+    public void writeMessage(Object msg){
+        this.msg.write(msg);
     }
 
-    private void writeMsg(Message msg){
-        this.msg = msg;
+    public Object readMessage(){
+        return this.msg.read();
     }
+
+    public void execute(){
+        this.msg.execute();
+    }
+
+    /**
+     * Message
+     * */
+    abstract class Message {
+        // this message has been executed, or not .
+        boolean finished;
+        // message type.
+        MessageType type;
+        public abstract void write(Object msg);
+        public abstract Object read();
+        public abstract void execute();
+        public MessageType getType(){return this.type;}
+        public boolean isFinished(){
+            return finished;
+        }
+    }
+
+    /**
+     * Hbase Message
+     * */
+    private class HbaseMessage extends Message {
+        public void write(Object msg) {
+
+        }
+
+        public Object read() {
+            return null;
+        }
+
+        public void execute() {
+
+        }
+    }
+
+    /**
+     * HDFS Message
+     * */
+    private class HDFSMessage extends Message {
+        public void write(Object msg) {
+
+        }
+
+        public Object read() {
+            return null;
+        }
+
+        public void execute() {
+
+        }
+    }
+
+    /**
+     * Spark Message
+     * */
+    private class SparkMessage extends Message {
+        public void write(Object msg) {}
+
+        public Object read() {
+            return null;
+        }
+
+        public void execute() {
+
+        }
+    }
+
+    /**
+     * Other Message
+     * */
+    private class OtherMessage extends Message {
+
+        private String in;
+        private String tmp;
+        private String out;
+        private MessageType type;
+        public OtherMessage(){
+            this.type = MessageType.OTHER;
+        }
+        public void write(Object msg) {
+            this.in = (String)msg;
+            this.tmp = this.in;
+        }
+
+        public Object read() {
+            return this.out;
+        }
+
+        public void execute() {
+            this.out = this.tmp;
+        }
+    }
+
 }
 

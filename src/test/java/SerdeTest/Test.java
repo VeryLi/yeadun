@@ -1,16 +1,14 @@
 package SerdeTest;
 
-import com.yeadun.bigdata.platform.protocol.MessageType;
-import com.yeadun.bigdata.platform.protocol.Protocol;
-import com.yeadun.bigdata.platform.protocol.messages.OtherMessage;
-import com.yeadun.bigdata.platform.server.PlatformConf;
-import com.yeadun.bigdata.platform.server.PlatformDefaultProps;
+import com.sun.xml.internal.ws.api.WSService;
+import com.sun.xml.internal.ws.util.ByteArrayBuffer;
 import com.yeadun.bigdata.platform.util.LogUtil;
-import com.yeadun.bigdata.platform.util.PropUtil;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.Unpooled;
+import io.netty.buffer.UnpooledDirectByteBuf;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
+import java.nio.ByteBuffer;
 
 /**
  * Created by chen on 16-12-5.
@@ -59,7 +57,7 @@ public class Test {
             System.out.println(user2.getName() + " == " + user2.getAge());
         }*/
 
-        try {
+/*        try {
             PropUtil p = new PropUtil("conf/platform.conf");
             Map<String, String> a = p.getAllPorps();
             Iterator<String> keys = a.keySet().iterator();
@@ -80,7 +78,31 @@ public class Test {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }*/
+
+
+        int a = 1132323;
+        ByteBuffer buf = ByteBuffer.allocate(100);
+        buf.putInt(a);
+        int headlength = buf.limit();
+        int headcap = buf.capacity();
+        int headpos = buf.position();
+        byte[] head = buf.array();
+//        System.out.println("1123 -> " + head + " ; length " + headlength + " ; capacity " + headcap + " ; position " + headpos);
+
+        String msg = "helloasdfasdfasdfasf";
+        byte[] msgByte = msg.getBytes();
+        System.out.println("length " + msgByte.length + " => " + (new String(msgByte)));
+        ByteBuf bbf = Unpooled.buffer(4 + msgByte.length);
+        bbf.writeInt(msgByte.length);
+        bbf.writeBytes(msgByte);
+        System.out.println(new String (bbf.copy(4, msgByte.length).array()));
+
+        for(byte b : bbf.array()){
+            System.out.print(b + " ");
         }
+        System.out.println();
+        System.out.println(bbf.copy(0, 4).readInt());
 
     }
 }

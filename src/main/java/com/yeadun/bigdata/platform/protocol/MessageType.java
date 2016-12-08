@@ -7,7 +7,5 @@ public enum MessageType {
     HDFS,
     HBASE,
     SPARK,
-    HIVE,
-    KAFKA,
-    OTHER;
+    OTHER
 }

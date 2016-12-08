@@ -1,5 +1,6 @@
 package SerdeTest;
 
+import com.yeadun.bigdata.platform.PlatformContext;
 import com.yeadun.bigdata.platform.server.PlatformServer;
 import com.yeadun.bigdata.platform.util.LogUtil;
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class Server {
     public static void main(String[] args) throws Exception{
         int port = 9999;
         logger.info("---- start server. ----");
-        new PlatformServer().run();
+        PlatformContext server = new PlatformContext();
+        server.startServer();
     }
 }
