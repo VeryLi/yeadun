@@ -1,12 +1,14 @@
 package com.yeadun.bigdata.platform.client;
 
 import com.yeadun.bigdata.platform.PlatformContext;
-import com.yeadun.bigdata.platform.protocol.KryoDecoder;
-import com.yeadun.bigdata.platform.protocol.KryoEncoder;
+import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.util.LogUtil;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 
 
 class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
@@ -18,9 +20,10 @@ class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
     }
 
     protected void initChannel(SocketChannel ch) throws Exception {
-        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(2147483647, 0, 4, 0, 4));
-        ch.pipeline().addLast(new KryoDecoder(this.ctx));
-        ch.pipeline().addLast(new KryoEncoder(this.ctx));
+        ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
+        ch.pipeline().addLast(new ProtobufDecoder(ProtocolProto.protocol.getDefaultInstance()));
+        ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+        ch.pipeline().addLast(new ProtobufEncoder());
         ch.pipeline().addLast(new ClientEventHandler(this.ctx));
         logger.info("Client Channel initialize finish.");
     }

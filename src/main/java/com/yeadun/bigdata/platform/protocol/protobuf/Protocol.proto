@@ -1,0 +1,21 @@
+import "Message.proto";
+option optimize_for = SPEED;
+option java_outer_classname = "ProtocolProto";
+
+message protocol{
+    optional int32 id = 1 [default = 1];
+    optional string name = 2;
+    optional ProtocolType protocolType = 3 [default = OTHER];
+    optional message request = 4;
+    optional message response = 5;
+    optional string MetaInfo = 6;
+}
+
+enum ProtocolType{
+    HDFS = 1;
+    HBASE = 2;
+    OTHER = 3;
+    SPARK = 4;
+    KAFKA = 5;
+    HIVE = 6;
+}

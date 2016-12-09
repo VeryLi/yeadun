@@ -1,10 +1,12 @@
 package com.yeadun.bigdata.platform;
 
 import com.yeadun.bigdata.platform.client.PlatformClient;
-import com.yeadun.bigdata.platform.protocol.KryoPoolFactory;
-import com.yeadun.bigdata.platform.protocol.Protocol;
+import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.server.PlatformServer;
 import com.yeadun.bigdata.platform.util.LogUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by chen on 16-12-8.
@@ -12,27 +14,28 @@ import com.yeadun.bigdata.platform.util.LogUtil;
 public class PlatformContext {
     private PlatformConf conf;
     private LogUtil logger = new LogUtil(PlatformContext.class);
-    private Protocol requestProtocol = null;
-    private Protocol responseProtocol = null;
-    private KryoPoolFactory kryoPool;
+    private ProtocolProto.protocol.Builder protocolBuilder;
+    private String ctxName;
+    private HashMap<String, String> clientRecord = null;
 
     /**
      * PlatformContext constructor
      * */
-    public PlatformContext (boolean onlyUseDefault) {
+    private PlatformContext (boolean onlyUseDefault) {
         this.conf = new PlatformConf(onlyUseDefault);
         init();
     }
     public PlatformContext () {
-        new PlatformContext(true);
+        this(true);
     }
 
     /**
      * initialise PlatformContext.
      * */
     private void init(){
+        this.clientRecord = new HashMap<String, String>();
+        this.protocolBuilder = ProtocolProto.protocol.newBuilder();
         this.logger.info("now platformContext is initializing.");
-        this.kryoPool = new KryoPoolFactory(this);
     }
 
     public void startClient(){
@@ -45,24 +48,29 @@ public class PlatformContext {
         ps.start();
     }
 
+    public void setCtxName(String name){
+        this.ctxName = name;
+    }
+
     public PlatformConf getConf(){
         return this.conf;
     }
 
-    public Protocol getRequestProtocol(){
-        return this.requestProtocol;
+    public ProtocolProto.protocol getProtocol(){
+        return this.protocolBuilder.build();
     }
 
-    public Protocol getResponseProtocol(){
-        return this.responseProtocol;
+    public ProtocolProto.protocol.Builder getProtocolBuilder(){
+        return this.protocolBuilder;
     }
 
-    public void writeRequestProtocol(Protocol protocol){
-        this.requestProtocol = protocol;
+    public void writeInfoIntoCtx(String clientId, String clientInfo){
+        this.clientRecord.put(clientId, clientInfo);
+        logger.info("client - " + clientId + ", " + clientInfo + ", has connected platform Server.");
     }
 
-    public void writeResponseProtocol(Protocol protocol){
-        this.responseProtocol = protocol;
-
+    public void removeInfoIntoCtx(String clientId){
+        this.clientRecord.remove(clientId);
+        logger.info("client - " + clientId + ", " + "has disconnected.");
     }
 }

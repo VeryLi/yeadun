@@ -2,19 +2,13 @@ package com.yeadun.bigdata.platform.server;
 
 import com.yeadun.bigdata.platform.PlatformConf;
 import com.yeadun.bigdata.platform.PlatformContext;
-import com.yeadun.bigdata.platform.protocol.KryoEncoder;
 import com.yeadun.bigdata.platform.util.LogUtil;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 
 /**
  * Created by chen on 16-11-30.
@@ -45,9 +39,9 @@ public class PlatformServer {
 
         try {
             // Bind and start to accept incoming connections.
-            logger.info("platform is binding on " + this.hostName + ", port is " + this.port);
+            logger.info("PlatformServer is starting, and address => [" + this.hostName + "], port => [" + this.port + "].");
             ChannelFuture cf = srvBoot.bind(this.hostName, this.port).sync();
-            logger.info("platform server start finish, waiting for client sending request ...");
+            logger.info("PlatformServer has been started successful.");
 
             // Wait until the server socket is closed.
             cf.channel().closeFuture().sync();
@@ -55,7 +49,7 @@ public class PlatformServer {
             this.logger.err(e.getMessage());
             e.printStackTrace();
         }finally {
-            logger.info("shutting down workGroup, bossGroup gracefully.");
+            logger.info("PlatformServer is shutting down workGroup, bossGroup successful.");
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
         }

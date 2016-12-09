@@ -1,23 +1,9 @@
 package SerdeTest;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
-import com.esotericsoftware.kryo.pool.KryoCallback;
-import com.esotericsoftware.kryo.pool.KryoFactory;
-import com.esotericsoftware.kryo.pool.KryoPool;
-import com.sun.xml.internal.fastinfoset.sax.SystemIdResolver;
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
-import com.sun.xml.internal.ws.api.WSService;
-import com.sun.xml.internal.ws.util.ByteArrayBuffer;
-import com.yeadun.bigdata.platform.protocol.KryoPoolFactory;
+import com.google.protobuf.GeneratedMessage;
+import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.util.LogUtil;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.Unpooled;
-import io.netty.buffer.UnpooledDirectByteBuf;
 
-import java.nio.ByteBuffer;
 
 /**
  * Created by chen on 16-12-5.
@@ -49,8 +35,33 @@ public class Test {
         }
     }
 
+
     public static void main(String[] args){
-        KryoPool pool = new KryoPool.Builder(new KryoFactory() {
+
+        ProtocolProto.protocol p = ProtocolProto.protocol.getDefaultInstance();
+        System.out.println(p.getName() + " -> " + p.getId());
+        ProtocolProto.protocol.Builder pb = p.toBuilder();
+        pb.setName("xxxxx");
+        pb.setId(1111);
+        ProtocolProto.protocol l = pb.build();
+        p = pb.build();
+        System.out.println(p.getName() + " -> " + p.getId());
+        System.out.println(l.getName() + " -> " + l.getId());
+
+        ProtocolProto.protocol.Builder builder = ProtocolProto.protocol.newBuilder();
+        builder.setId(2);
+        builder.setName("tom");
+        ProtocolProto.protocol protocol = builder.build();
+        System.out.println(protocol.getId() + " => " + protocol.getName());
+
+        protocol.toBuilder().setName("lee").setId(3).build();
+        System.out.println(protocol.getId() + " => " + protocol.getName());
+        System.out.println(protocol.toBuilder().getId() + " => " + protocol.toBuilder().getName());
+        protocol = protocol.toBuilder().setName("lee").setId(3).build();
+        System.out.println(protocol.getId() + " => " + protocol.getName());
+
+
+/*        KryoPool pool = new KryoPool.Builder(new KryoFactory() {
             public Kryo create() {
                 Kryo kryo = new Kryo();
                 kryo.setReferences(false);
@@ -100,7 +111,7 @@ public class Test {
         if(obj instanceof User){
             User user2 = (User) obj;
             System.out.println(user2.getName() + " == " + user2.getAge());
-        }
+        }*/
 
 /*        try {
             PropUtil p = new PropUtil("conf/platform.conf");
@@ -149,5 +160,7 @@ public class Test {
         System.out.println();
         System.out.println(bbf.copy(0, 4).readInt());*/
 
+
     }
 }
+
