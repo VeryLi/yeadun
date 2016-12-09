@@ -6,11 +6,6 @@ import com.yeadun.bigdata.platform.util.LogUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-
 public class ServerEventHandler extends ChannelInboundHandlerAdapter {
     private LogUtil logger = new LogUtil(ServerEventHandler.class);
     private PlatformContext ctx;
@@ -48,7 +43,7 @@ public class ServerEventHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx){
         ctx.fireChannelActive();
-        logger.info("platform server socket is waiting for client request.");
+        logger.info("platform server socket status [Active], is waiting for client request.");
 
     }
 }

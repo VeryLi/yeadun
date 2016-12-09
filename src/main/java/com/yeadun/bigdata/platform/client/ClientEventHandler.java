@@ -4,6 +4,7 @@ import com.yeadun.bigdata.platform.PlatformContext;
 import com.yeadun.bigdata.platform.protocol.MessageProto;
 import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.util.LogUtil;
+import com.yeadun.bigdata.platform.util.ProtocolInfoUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -11,7 +12,9 @@ public class ClientEventHandler extends ChannelInboundHandlerAdapter {
 
     private LogUtil logger = new LogUtil(ClientEventHandler.class);
     private PlatformContext ctx;
+    private ProtocolInfoUtil infoUtil ;
     public ClientEventHandler(PlatformContext ctx){
+        this.infoUtil = new ProtocolInfoUtil();
         this.ctx = ctx;
     }
 
@@ -20,10 +23,10 @@ public class ClientEventHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        logger.info("client socket is built successful.");
+        logger.info("client socket [Active], is built successful.");
         ProtocolProto.protocol req = this.ctx.getProtocol();
         checkRequestIsValid(req);
-        logger.info("Client send request to Server - [" + req.getId() + "] " + req.getName() + ", " + req.getProtocolType());
+        logger.info("Client send request to Server - " + infoUtil.protoInfo(req) + ", " + infoUtil.reqInfo(req) + ", " + req.getProtocolType());
         // send request protocol to server.
         ctx.writeAndFlush(req);
     }
@@ -55,20 +58,19 @@ public class ClientEventHandler extends ChannelInboundHandlerAdapter {
     private void checkRequestIsValid(ProtocolProto.protocol protocol) throws Exception {
         MessageProto.message request = protocol.getRequest();
         if(request.getFinished()){
-            throw new Exception("Request : [" + request.getId() +"]:" + request.getName() + ", " + request.getType()
-                    + " has been executed. - " + request.getMessageBodyList().toString());
+            throw new Exception(infoUtil.protoInfo(protocol) + ", " + infoUtil.reqInfo(protocol) + " - " + request.getMessageBodyList().toString());
         }
 
         if(!request.hasType()){
-            throw new Exception("Request : [" + request.getId() +"]:" + request.getName() + " dose not have Message Type. ");
+            throw new Exception(infoUtil.protoInfo(protocol) + ", " + infoUtil.reqInfo(protocol) + " dose not have Message Type. ");
         }
 
         if(request.getType().getNumber() != 1){
-            throw new Exception("Request : [" + request.getId() +"]:" + request.getName() + " is not a request.");
+            throw new Exception(infoUtil.protoInfo(protocol) + ", " + infoUtil.reqInfo(protocol) + " is not a request.");
         }
 
         if(request.getMessageBodyList() == null){
-            logger.warn("Request : [" + request.getId() +"]:" + request.getName() + " is null.");
+            logger.warn(infoUtil.protoInfo(protocol) + ", " + infoUtil.reqInfo(protocol) + " is null.");
         }
     }
 }

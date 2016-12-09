@@ -2,7 +2,7 @@ option optimize_for = SPEED;
 option java_outer_classname = "MessageProto";
 message message {
     optional int32 id = 1 [default = 1];
-    optional string name = 2;
+    optional string name = 2  [default = "Anonymous"];
     optional MessageType type = 3 ;
     optional bool finished = 4 [default = false];
     optional string input = 5;

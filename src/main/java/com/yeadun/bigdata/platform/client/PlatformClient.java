@@ -24,11 +24,16 @@ public class PlatformClient {
     public void start(){
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap boot = new Bootstrap();
-        boot.group(group)
-                .channel(NioSocketChannel.class)
-                .handler(new ClientChannelInitializer(this.ctx))
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeout)
-                .option(ChannelOption.TCP_NODELAY, true);
+        try {
+            boot.group(group)
+                    .channel(NioSocketChannel.class)
+                    .handler(new ClientChannelInitializer(this.ctx))
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeout)
+                    .option(ChannelOption.TCP_NODELAY, true);
+        }catch(Exception e){
+            this.logger.err(e.getMessage());
+            e.printStackTrace();
+        }
         try {
             // Start the client.
             logger.info("client is connecting to " + this.hostName + ":" + this.port + ".");

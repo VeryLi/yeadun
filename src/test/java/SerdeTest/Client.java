@@ -12,6 +12,7 @@ public class Client {
         PlatformContext ctx = new PlatformContext();
         ctx.getProtocolBuilder().setName("this is test.");
         ctx.getProtocolBuilder().setId(110);
+        ctx.getProtocolBuilder().setName("MyTestClient");
         ctx.getProtocolBuilder().getRequestBuilder().setType(MessageProto.MessageType.REQUEST);
         ctx.startClient();
 
