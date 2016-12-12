@@ -11,9 +11,6 @@ import java.net.SocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
-/**
- * Created by chen on 16-11-29.
- */
 public class Server {
     private static LogUtil logger = new LogUtil(Server.class);
 

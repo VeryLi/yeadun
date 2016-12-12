@@ -1,31 +1,44 @@
 package com.yeadun.bigdata.platform.server;
 
 import com.yeadun.bigdata.platform.PlatformContext;
+import com.yeadun.bigdata.platform.control.PlatformController;
 import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.util.LogUtil;
+import com.yeadun.bigdata.platform.util.ProtocolInfoUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-public class ServerEventHandler extends ChannelInboundHandlerAdapter {
+/**
+ * ServerEventHandler class responsibility is received Protocol from Client, and resolving ProtocolFactory in the Protocol.
+ * All kinds of Requests will be passed to corresponding RequestHandler to handle. Finally, put Result into Response,
+ * and put Response into Protocol, sending this Protocol to Client.
+ */
+class ServerEventHandler extends ChannelInboundHandlerAdapter {
     private LogUtil logger = new LogUtil(ServerEventHandler.class);
     private PlatformContext ctx;
+    private ProtocolInfoUtil infoUtil;
     private String clientKey;
-    public ServerEventHandler(PlatformContext ctx){
+    ServerEventHandler(PlatformContext ctx){
         this.ctx = ctx;
+        this.infoUtil = new ProtocolInfoUtil();
     }
 
     /**
-     * receive request from Client, and execute.
+     * receive Protocol contain ProtocolFactory from Client, and handling.
+     * @param ctx ChannelHandlerContext.
+     * @param req Protocol which contains ProtocolFactory Message.
      * */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object req){
-        ProtocolProto.protocol.Builder reqBuild = ((ProtocolProto.protocol) req).toBuilder();
-        logger.info("server receive request from client : name -> " + reqBuild.getName() + ", id -> " + reqBuild.getId());
-        reqBuild.setName("this is test. <- I known");
-        reqBuild.setId(111);
-        logger.info("server has executed.");
-        logger.info(reqBuild.build().getName() + "--->"+reqBuild.build().getId());
-        ctx.writeAndFlush(reqBuild.build());
+        ProtocolProto.protocol protocol = (ProtocolProto.protocol) req;
+        logger.info("server has received request from client. " + this.infoUtil.reqInfo(protocol));
+        PlatformController.passReqToWorker(protocol);
+
+        String key = protocol.getResponse().getMessageBodyList().get(0).getKey();
+        String val = protocol.getResponse().getMessageBodyList().get(0).getVal();
+        logger.info(key + " ---------- " + val);
+
+        ctx.writeAndFlush(protocol);
     }
 
     @Override
@@ -43,7 +56,7 @@ public class ServerEventHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx){
         ctx.fireChannelActive();
-        logger.info("platform server socket status [Active], is waiting for client request.");
+        logger.info("platform Server and Client to establish a connection. Now is waiting for client request.");
 
     }
 }

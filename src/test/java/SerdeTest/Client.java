@@ -1,7 +1,9 @@
 package SerdeTest;
 
 import com.yeadun.bigdata.platform.PlatformContext;
-import com.yeadun.bigdata.platform.protocol.MessageProto;
+import com.yeadun.bigdata.platform.protocol.ProtocolProto;
+import com.yeadun.bigdata.platform.protocol.request.OtherRequest;
+import com.yeadun.bigdata.platform.protocol.ProtocolFactory;
 import com.yeadun.bigdata.platform.util.LogUtil;
 
 
@@ -10,11 +12,12 @@ public class Client {
     private static LogUtil logger = new LogUtil(Client.class);
     public static void main(String[] args) throws Exception{
         PlatformContext ctx = new PlatformContext();
-        ctx.getProtocolBuilder().setName("this is test.");
-        ctx.getProtocolBuilder().setId(110);
-        ctx.getProtocolBuilder().setName("MyTestClient");
-        ctx.getProtocolBuilder().getRequestBuilder().setType(MessageProto.MessageType.REQUEST);
+        ProtocolProto.ProtocolType type = ProtocolProto.ProtocolType.OTHER;
+        OtherRequest req = (OtherRequest) ProtocolFactory.createRequest(ctx.getProtocol(), type);
+        req.setInput("in", "This is request test. your name is --> ");
         ctx.startClient();
-
+        String outkey = ctx.getProtocol().getResponse().getMessageBodyList().get(0).getKey();
+        String outVal = ctx.getProtocol().getResponse().getMessageBodyList().get(0).getVal();
+        logger.info("Client receive result is : key -> " + outkey + ", value -> " + outVal + ".");
     }
 }

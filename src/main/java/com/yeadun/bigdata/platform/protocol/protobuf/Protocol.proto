@@ -3,7 +3,7 @@ option optimize_for = SPEED;
 option java_outer_classname = "ProtocolProto";
 
 message protocol{
-    optional int32 id = 1 [default = 1];
+    optional string id = 1 ;
     optional string name = 2 [default = "Anonymous"];
     optional ProtocolType protocolType = 3 [default = OTHER];
     optional message request = 4;

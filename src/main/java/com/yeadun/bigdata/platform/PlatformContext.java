@@ -1,12 +1,14 @@
 package com.yeadun.bigdata.platform;
 
 import com.yeadun.bigdata.platform.client.PlatformClient;
+import com.yeadun.bigdata.platform.control.PlatformController;
 import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.server.PlatformServer;
 import com.yeadun.bigdata.platform.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Created by chen on 16-12-8.
@@ -14,9 +16,9 @@ import java.util.HashMap;
 public class PlatformContext {
     private PlatformConf conf;
     private LogUtil logger = new LogUtil(PlatformContext.class);
-    private ProtocolProto.protocol.Builder protocolBuilder;
-    private String ctxName;
+    private ProtocolProto.protocol protocol;
     private HashMap<String, String> clientRecord = null;
+    private boolean isInit = false;
 
     /**
      * PlatformContext constructor
@@ -34,22 +36,39 @@ public class PlatformContext {
      * */
     private void init(){
         this.clientRecord = new HashMap<String, String>();
-        this.protocolBuilder = ProtocolProto.protocol.newBuilder();
-        this.logger.info("now platformContext is initializing.");
+        this.protocol = ProtocolProto.protocol.getDefaultInstance();
+        this.protocol.toBuilder().setId(UUID.randomUUID().toString());
+        this.logger.info("now platformContext is initialized");
+        this.isInit = true;
+    }
+
+    private void checkIsInit() throws PlatformConextIsNotInitialization{
+        if(!isInit){
+            logger.err("Platform is not initialization.");
+            throw new PlatformConextIsNotInitialization("Platform is not initialization.");
+        }
     }
 
     public void startClient(){
+        try {
+            checkIsInit();
+        } catch (PlatformConextIsNotInitialization platformConextIsNotInitialization) {
+            logger.err(platformConextIsNotInitialization.getMessage());
+            platformConextIsNotInitialization.printStackTrace();
+        }
         PlatformClient pc = new PlatformClient(this);
         pc.start();
     }
 
     public void startServer(){
+        try {
+            checkIsInit();
+        } catch (PlatformConextIsNotInitialization platformConextIsNotInitialization) {
+            logger.err(platformConextIsNotInitialization.getMessage());
+            platformConextIsNotInitialization.printStackTrace();
+        }
         PlatformServer ps = new PlatformServer(this);
         ps.start();
-    }
-
-    public void setCtxName(String name){
-        this.ctxName = name;
     }
 
     public PlatformConf getConf(){
@@ -57,11 +76,11 @@ public class PlatformContext {
     }
 
     public ProtocolProto.protocol getProtocol(){
-        return this.protocolBuilder.build();
+        return this.protocol;
     }
 
     public ProtocolProto.protocol.Builder getProtocolBuilder(){
-        return this.protocolBuilder;
+        return this.protocol.toBuilder();
     }
 
     public void writeInfoIntoCtx(String clientId, String clientInfo){

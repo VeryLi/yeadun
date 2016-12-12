@@ -6,8 +6,8 @@ import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 public class ProtocolInfoUtil {
 
     public String reqInfo(ProtocolProto.protocol protocol){
-        // get Request info.
-        int reqId = protocol.getRequest().getId();
+        // get ProtocolFactory info.
+        String reqId = protocol.getRequest().getId();
         String reqName = protocol.getRequest().getName();
         String reqType = protocol.getRequest().getType().toString();
         return "Request [id - " + reqId + " , name - " + reqName + " , type - " + reqType + "]";
@@ -15,7 +15,7 @@ public class ProtocolInfoUtil {
 
     public String respInfo(ProtocolProto.protocol protocol){
         // get Response info.
-        int respId = protocol.getResponse().getId();
+        String respId = protocol.getResponse().getId();
         String respName = protocol.getResponse().getName();
         String respType = protocol.getResponse().getType().toString();
         return "Response [id - " + respId + " , name - " + respName + " , type - " + respType + "]";
@@ -23,7 +23,7 @@ public class ProtocolInfoUtil {
 
     public String protoInfo(ProtocolProto.protocol protocol){
         // get Protocol info.
-        int protoId = protocol.getId();
+        String protoId = protocol.getId();
         String protoName = protocol.getName();
         String protoType = protocol.getProtocolType().toString();
         return "Protocol [id - " + protoId + " , name - " + protoName + " , type - " + protoType + "]";

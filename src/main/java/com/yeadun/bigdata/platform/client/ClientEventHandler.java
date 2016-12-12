@@ -8,38 +8,47 @@ import com.yeadun.bigdata.platform.util.ProtocolInfoUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-public class ClientEventHandler extends ChannelInboundHandlerAdapter {
+/**
+ * ClientEventHandler major responsibility is two points.
+ * 1. when Client has connected to Server, sending request to Server.
+ * 2. when Client has received response from Server, passing response to user.
+ * */
+class ClientEventHandler extends ChannelInboundHandlerAdapter {
 
     private LogUtil logger = new LogUtil(ClientEventHandler.class);
     private PlatformContext ctx;
     private ProtocolInfoUtil infoUtil ;
-    public ClientEventHandler(PlatformContext ctx){
+    ClientEventHandler(PlatformContext ctx){
         this.infoUtil = new ProtocolInfoUtil();
         this.ctx = ctx;
     }
 
     /**
-     * send request from Client to Server.
+     * send Protocol which contains ProtocolFactory to Server.
+     * @param ctx ChannelHandler Context.
+     * @exception Exception this exception is throw by checkRequestIsValid function.
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         logger.info("client socket [Active], is built successful.");
         ProtocolProto.protocol req = this.ctx.getProtocol();
-        checkRequestIsValid(req);
+//        checkRequestIsValid(req);
         logger.info("Client send request to Server - " + infoUtil.protoInfo(req) + ", " + infoUtil.reqInfo(req) + ", " + req.getProtocolType());
         // send request protocol to server.
         ctx.writeAndFlush(req);
     }
 
     /**
-     * Client receive response from Server, and execute.
+     * Client receive Protocol which contains Response from Server, and handling.
+     * @param ctx ChannelHandlerContext
+     * @param resp Client receive response from Server.
      * */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object resp) throws Exception {
-        logger.info("reach client again...");
-        ProtocolProto.protocol msg = (ProtocolProto.protocol) resp;
-        logger.info("client receive response from server : name -> " + msg.getName()
-                + ", id -> " + msg.getId() + ", type -> " + msg.getProtocolType());
+        logger.info("client receive server response.");
+        ProtocolProto.protocol protocol = (ProtocolProto.protocol) resp;
+        logger.info("client receive Protocol Info is " + infoUtil.protoInfo(protocol) +
+                ", Response Info is " + infoUtil.respInfo(protocol));
     }
 
     @Override
@@ -55,6 +64,10 @@ public class ClientEventHandler extends ChannelInboundHandlerAdapter {
         ctx.close();
     }
 
+    /**
+     * check ProtocolFactory Message which in Protocol, is valid, or not.
+     * @param protocol Protocol contains ProtocolFactory Message.
+     * */
     private void checkRequestIsValid(ProtocolProto.protocol protocol) throws Exception {
         MessageProto.message request = protocol.getRequest();
         if(request.getFinished()){

@@ -4,6 +4,8 @@ import com.google.protobuf.GeneratedMessage;
 import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.util.LogUtil;
 
+import java.util.UUID;
+
 
 /**
  * Created by chen on 16-12-5.
@@ -42,22 +44,22 @@ public class Test {
         System.out.println(p.getName() + " -> " + p.getId());
         ProtocolProto.protocol.Builder pb = p.toBuilder();
         pb.setName("xxxxx");
-        pb.setId(1111);
+        pb.setId(UUID.randomUUID().toString());
         ProtocolProto.protocol l = pb.build();
         p = pb.build();
         System.out.println(p.getName() + " -> " + p.getId());
         System.out.println(l.getName() + " -> " + l.getId());
 
         ProtocolProto.protocol.Builder builder = ProtocolProto.protocol.newBuilder();
-        builder.setId(2);
+        builder.setId(UUID.randomUUID().toString());
         builder.setName("tom");
         ProtocolProto.protocol protocol = builder.build();
         System.out.println(protocol.getId() + " => " + protocol.getName());
 
-        protocol.toBuilder().setName("lee").setId(3).build();
+        protocol.toBuilder().setName("lee").setId(UUID.randomUUID().toString()).build();
         System.out.println(protocol.getId() + " => " + protocol.getName());
         System.out.println(protocol.toBuilder().getId() + " => " + protocol.toBuilder().getName());
-        protocol = protocol.toBuilder().setName("lee").setId(3).build();
+        protocol = protocol.toBuilder().setName("lee").setId(UUID.randomUUID().toString()).build();
         System.out.println(protocol.getId() + " => " + protocol.getName());
 
 
