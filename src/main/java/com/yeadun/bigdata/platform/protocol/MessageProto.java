@@ -1397,6 +1397,7 @@ public final class MessageProto {
         }
         return this;
       }
+
       /**
        * <code>repeated .DataPair messageBody = 7;</code>
        */

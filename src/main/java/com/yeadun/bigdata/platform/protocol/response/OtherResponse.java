@@ -16,5 +16,6 @@ public class OtherResponse extends MessageConstructor {
 
     public void setOutput(String key, String val){
         setRequestPair(key, val, "Other out value.");
+        flush();
     }
 }

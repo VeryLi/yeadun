@@ -3,6 +3,7 @@ package SerdeTest;
 import com.google.protobuf.GeneratedMessage;
 import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.util.LogUtil;
+import com.yeadun.bigdata.platform.util.ProtocolInfoUtil;
 
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
  */
 public class Test {
     private static LogUtil logger = new LogUtil(Test.class);
+    private static ProtocolInfoUtil infoUtil = new ProtocolInfoUtil();
     static class User  {
         private String name;
         private int age;
@@ -61,6 +63,8 @@ public class Test {
         System.out.println(protocol.toBuilder().getId() + " => " + protocol.toBuilder().getName());
         protocol = protocol.toBuilder().setName("lee").setId(UUID.randomUUID().toString()).build();
         System.out.println(protocol.getId() + " => " + protocol.getName());
+
+        System.out.println(infoUtil.allInfo(protocol));
 
 
 /*        KryoPool pool = new KryoPool.Builder(new KryoFactory() {

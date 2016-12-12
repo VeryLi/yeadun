@@ -37,7 +37,7 @@ public class PlatformContext {
     private void init(){
         this.clientRecord = new HashMap<String, String>();
         this.protocol = ProtocolProto.protocol.getDefaultInstance();
-        this.protocol.toBuilder().setId(UUID.randomUUID().toString());
+        this.protocol = this.protocol.toBuilder().setId(UUID.randomUUID().toString()).build();
         this.logger.info("now platformContext is initialized");
         this.isInit = true;
     }

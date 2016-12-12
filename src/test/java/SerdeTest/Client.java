@@ -15,7 +15,10 @@ public class Client {
         ProtocolProto.ProtocolType type = ProtocolProto.ProtocolType.OTHER;
         OtherRequest req = (OtherRequest) ProtocolFactory.createRequest(ctx.getProtocol(), type);
         req.setInput("in", "This is request test. your name is --> ");
+
+        logger.info("protocol ID -> " + ctx.getProtocol().getId());
         ctx.startClient();
+        logger.info(ctx.getProtocol().getResponse().getMessageBodyList().size()+"");
         String outkey = ctx.getProtocol().getResponse().getMessageBodyList().get(0).getKey();
         String outVal = ctx.getProtocol().getResponse().getMessageBodyList().get(0).getVal();
         logger.info("Client receive result is : key -> " + outkey + ", value -> " + outVal + ".");

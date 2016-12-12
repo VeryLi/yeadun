@@ -8,6 +8,7 @@ import java.util.UUID;
 public abstract class MessageConstructor {
     private MessageProto.message message;
     private ArrayList<MessageProto.DataPair> msgBodys;
+    private ProtocolProto.protocol protocol;
     private LogUtil logger = new LogUtil(MessageConstructor.class);
 
     protected abstract void setInputData();
@@ -15,10 +16,17 @@ public abstract class MessageConstructor {
     protected abstract void setOutputData();
 
     protected MessageConstructor(ProtocolProto.protocol protocol, MessageProto.MessageType type){
+        this.protocol = protocol;
         this.message = protocol.getRequest();
-        this.message.toBuilder().setId(UUID.randomUUID().toString());
-        this.message.toBuilder().setType(type);
+        this.message = this.message.toBuilder().setId(UUID.randomUUID().toString()).build();
+        this.message = this.message.toBuilder().setType(type).build();
         this.msgBodys = this.message.getMessageBodyList();
+
+    }
+
+    protected void flush(){
+        ProtocolProto.protocol.Builder builder = this.protocol.toBuilder();
+        this.protocol = builder.setRequest(this.message).build();
     }
 
     private void putDataPairIntoList(MessageProto.DataPair data){
@@ -34,7 +42,6 @@ public abstract class MessageConstructor {
     }
 
     protected void setReqName(String name){
-        this.message.toBuilder().setName(name);
+        this.message = this.message.toBuilder().setName(name).build();
     }
-
 }
