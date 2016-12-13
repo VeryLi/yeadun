@@ -9,24 +9,23 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
- * ServerEventHandler class responsibility is received Protocol from Client, and resolving ProtocolFactory in the Protocol.
- * All kinds of Requests will be passed to corresponding RequestHandler to handle. Finally, put Result into Response,
- * and put Response into Protocol, sending this Protocol to Client.
+ * ServerEventHandler class responsibility is received Protocol from Client, and resolving ProtocolConstructor in the Protocol.
+ * All kinds of Requests will be passed to corresponding RequestHandler to handle. Finally, put Result into Response.proto.proto,
+ * and put Response.proto.proto into Protocol, sending this Protocol to Client.
  */
 class ServerEventHandler extends ChannelInboundHandlerAdapter {
     private LogUtil logger = new LogUtil(ServerEventHandler.class);
     private PlatformContext ctx;
     private ProtocolInfoUtil infoUtil;
-    private String clientKey;
     ServerEventHandler(PlatformContext ctx){
         this.ctx = ctx;
         this.infoUtil = new ProtocolInfoUtil();
     }
 
     /**
-     * receive Protocol contain ProtocolFactory from Client, and handling.
+     * receive Protocol contain ProtocolConstructor from Client, and handling.
      * @param ctx ChannelHandlerContext.
-     * @param req Protocol which contains ProtocolFactory Message.
+     * @param req Protocol which contains ProtocolConstructor Message.
      * */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object req){

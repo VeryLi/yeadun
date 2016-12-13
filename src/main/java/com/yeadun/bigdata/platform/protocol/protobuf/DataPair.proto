@@ -1,0 +1,7 @@
+option optimize_for = SPEED;
+option java_outer_classname = "DataPairProto";
+message DataPair{
+    optional string key = 1;
+    optional string val = 2;
+    optional string name = 3;
+}

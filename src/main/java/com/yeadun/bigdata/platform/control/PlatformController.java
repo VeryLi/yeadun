@@ -1,12 +1,11 @@
 package com.yeadun.bigdata.platform.control;
 
-import com.yeadun.bigdata.platform.worker.OtherWorker;
 import com.yeadun.bigdata.platform.protocol.InvalidProtocolTypeException;
 import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.util.LogUtil;
 
 /**
- * PlatformController class is resolving ProtocolFactory Message, according to it's type, distributing to
+ * PlatformController class is resolving ProtocolConstructor Message, according to it's type, distributing to
  * corresponding handler to handle.
  */
 public class PlatformController {
@@ -55,8 +54,6 @@ public class PlatformController {
     private void hiveWork(){}
     private void kafkaWork(){}
     private void otherWork(){
-        OtherWorker otherWorker = new OtherWorker(this.protocol);
-        otherWorker.handle();
     }
     private void sparkWork(){}
 }

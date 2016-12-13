@@ -12,11 +12,11 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 
 
 class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
-    private PlatformContext ctx;
+    private ProtocolProto.protocol protocol;
     private LogUtil logger = new LogUtil(ClientChannelInitializer.class);
 
-    ClientChannelInitializer(PlatformContext ctx){
-        this.ctx = ctx;
+    ClientChannelInitializer(ProtocolProto.protocol protocol){
+        this.protocol = protocol;
     }
 
     protected void initChannel(SocketChannel ch) throws Exception {
@@ -24,7 +24,7 @@ class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
         ch.pipeline().addLast(new ProtobufDecoder(ProtocolProto.protocol.getDefaultInstance()));
         ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
         ch.pipeline().addLast(new ProtobufEncoder());
-        ch.pipeline().addLast(new ClientEventHandler(this.ctx));
+        ch.pipeline().addLast(new ClientEventHandler(this.protocol));
         logger.info("Client Channel initialize finish.");
     }
 }

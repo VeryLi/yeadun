@@ -1,0 +1,10 @@
+import "DataPair.proto";
+option optimize_for = SPEED;
+option java_outer_classname = "ResponseProto";
+message response {
+    optional string id = 1 ;
+    optional string name = 2  [default = "Anonymous"];
+    optional string input = 3;
+    optional string output = 4;
+    repeated DataPair messageBody = 5;
+}

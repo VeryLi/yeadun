@@ -1,10 +1,15 @@
 package SerdeTest;
 
 import com.google.protobuf.GeneratedMessage;
+import com.yeadun.bigdata.platform.PlatformContext;
+import com.yeadun.bigdata.platform.protocol.DataPairProto;
 import com.yeadun.bigdata.platform.protocol.ProtocolProto;
+import com.yeadun.bigdata.platform.protocol.RequestProto;
+import com.yeadun.bigdata.platform.protocol.constructor.OtherProtocolConstructor;
 import com.yeadun.bigdata.platform.util.LogUtil;
 import com.yeadun.bigdata.platform.util.ProtocolInfoUtil;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -42,7 +47,51 @@ public class Test {
 
     public static void main(String[] args){
 
-        ProtocolProto.protocol p = ProtocolProto.protocol.getDefaultInstance();
+        PlatformContext ctx = new PlatformContext();
+        OtherProtocolConstructor opc = new OtherProtocolConstructor(ctx);
+        opc.setProtocolName("ProtoName")
+                .setRequestName("ReqName")
+                .setResponseName("RespName")
+                .putInputData("k1", "v1")
+                .flush();
+        ProtocolProto.protocol protocol2 = ctx.getProtocol();
+        logger.info(protocol2.getName() + " --- "
+                + protocol2.getRequest().getMessageBody(0).getName() + " ---- "
+                + protocol2.getRequest().getMessageBody(0).getKey() + " ---- "
+                + protocol2.getRequest().getMessageBody(0).getVal());
+
+/*
+
+        ProtocolProto.protocol protocol = ProtocolProto.protocol.getDefaultInstance();
+        List<DataPairProto.DataPair> list = protocol.getRequest().getMessageBodyList();
+
+        DataPairProto.DataPair data = DataPairProto.DataPair.newBuilder()
+                .setKey("keasdfy")
+                .setName("nasdfame")
+                .setVal("vaasdfl")
+                .build();
+        list.add(data);
+        List<DataPairProto.DataPair> list2 = protocol.getRequest().toBuilder().getMessageBodyList();
+        logger.info(protocol.getRequest().getName() + " --- "
+                + protocol.getRequest().getMessageBody(0).getName() + " ---- "
+                + protocol.getRequest().getMessageBody(0).getKey() + " ---- "
+                + protocol.getRequest().getMessageBody(0).getVal());
+
+        ProtocolProto.protocol protocol1 = ProtocolProto.protocol.getDefaultInstance();
+        RequestProto.request request = protocol1.getRequest();
+        RequestProto.request.Builder reqBuilder = request.toBuilder();
+        reqBuilder.getMessageBodyList().add(data);
+        request = reqBuilder.build();
+        protocol1 = protocol1.toBuilder().setRequest(request).build();
+        logger.info(protocol1.getRequest().getName() + " --- "
+                + protocol1.getRequest().getMessageBody(0).getName() + " ---- "
+                + protocol1.getRequest().getMessageBody(0).getKey() + " ---- "
+                + protocol1.getRequest().getMessageBody(0).getVal());
+*/
+
+
+
+/*        ProtocolProto.protocol p = ProtocolProto.protocol.getDefaultInstance();
         System.out.println(p.getName() + " -> " + p.getId());
         ProtocolProto.protocol.Builder pb = p.toBuilder();
         pb.setName("xxxxx");
@@ -64,7 +113,7 @@ public class Test {
         protocol = protocol.toBuilder().setName("lee").setId(UUID.randomUUID().toString()).build();
         System.out.println(protocol.getId() + " => " + protocol.getName());
 
-        System.out.println(infoUtil.allInfo(protocol));
+        System.out.println(infoUtil.allInfo(protocol));*/
 
 
 /*        KryoPool pool = new KryoPool.Builder(new KryoFactory() {

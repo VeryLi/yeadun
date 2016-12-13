@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-/**
- * Created by chen on 16-12-8.
- */
 public class PlatformContext {
     private PlatformConf conf;
     private LogUtil logger = new LogUtil(PlatformContext.class);
@@ -22,6 +19,7 @@ public class PlatformContext {
 
     /**
      * PlatformContext constructor
+     * @param onlyUseDefault whether using default configuration.
      * */
     private PlatformContext (boolean onlyUseDefault) {
         this.conf = new PlatformConf(onlyUseDefault);
@@ -32,12 +30,11 @@ public class PlatformContext {
     }
 
     /**
-     * initialise PlatformContext.
+     * initialise PlatformContext. creating a new protocol.
      * */
     private void init(){
         this.clientRecord = new HashMap<String, String>();
         this.protocol = ProtocolProto.protocol.getDefaultInstance();
-        this.protocol = this.protocol.toBuilder().setId(UUID.randomUUID().toString()).build();
         this.logger.info("now platformContext is initialized");
         this.isInit = true;
     }
@@ -49,15 +46,15 @@ public class PlatformContext {
         }
     }
 
-    public void startClient(){
+    public void send(){
         try {
             checkIsInit();
         } catch (PlatformConextIsNotInitialization platformConextIsNotInitialization) {
             logger.err(platformConextIsNotInitialization.getMessage());
             platformConextIsNotInitialization.printStackTrace();
         }
-        PlatformClient pc = new PlatformClient(this);
-        pc.start();
+        PlatformClient pc = new PlatformClient();
+        pc.start(this.protocol);
     }
 
     public void startServer(){
@@ -77,6 +74,10 @@ public class PlatformContext {
 
     public ProtocolProto.protocol getProtocol(){
         return this.protocol;
+    }
+
+    public void setProtocol(ProtocolProto.protocol protocol){
+        this.protocol = protocol;
     }
 
     public ProtocolProto.protocol.Builder getProtocolBuilder(){

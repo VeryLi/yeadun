@@ -158,50 +158,59 @@ public final class ProtocolProto {
         getNameBytes();
 
     /**
-     * <code>optional .ProtocolType protocolType = 3 [default = OTHER];</code>
+     * <code>optional bool finished = 3 [default = false];</code>
+     */
+    boolean hasFinished();
+    /**
+     * <code>optional bool finished = 3 [default = false];</code>
+     */
+    boolean getFinished();
+
+    /**
+     * <code>optional .ProtocolType protocolType = 4 [default = OTHER];</code>
      */
     boolean hasProtocolType();
     /**
-     * <code>optional .ProtocolType protocolType = 3 [default = OTHER];</code>
+     * <code>optional .ProtocolType protocolType = 4 [default = OTHER];</code>
      */
     ProtocolProto.ProtocolType getProtocolType();
 
     /**
-     * <code>optional .message request = 4;</code>
+     * <code>optional .request request = 5;</code>
      */
     boolean hasRequest();
     /**
-     * <code>optional .message request = 4;</code>
+     * <code>optional .request request = 5;</code>
      */
-    MessageProto.message getRequest();
+    RequestProto.request getRequest();
     /**
-     * <code>optional .message request = 4;</code>
+     * <code>optional .request request = 5;</code>
      */
-    MessageProto.messageOrBuilder getRequestOrBuilder();
+    RequestProto.requestOrBuilder getRequestOrBuilder();
 
     /**
-     * <code>optional .message response = 5;</code>
+     * <code>optional .response response = 6;</code>
      */
     boolean hasResponse();
     /**
-     * <code>optional .message response = 5;</code>
+     * <code>optional .response response = 6;</code>
      */
-    MessageProto.message getResponse();
+    ResponseProto.response getResponse();
     /**
-     * <code>optional .message response = 5;</code>
+     * <code>optional .response response = 6;</code>
      */
-    MessageProto.messageOrBuilder getResponseOrBuilder();
+    ResponseProto.responseOrBuilder getResponseOrBuilder();
 
     /**
-     * <code>optional string MetaInfo = 6;</code>
+     * <code>optional string MetaInfo = 7;</code>
      */
     boolean hasMetaInfo();
     /**
-     * <code>optional string MetaInfo = 6;</code>
+     * <code>optional string MetaInfo = 7;</code>
      */
     java.lang.String getMetaInfo();
     /**
-     * <code>optional string MetaInfo = 6;</code>
+     * <code>optional string MetaInfo = 7;</code>
      */
     com.google.protobuf.ByteString
         getMetaInfoBytes();
@@ -271,45 +280,50 @@ public final class ProtocolProto {
               break;
             }
             case 24: {
+              bitField0_ |= 0x00000004;
+              finished_ = input.readBool();
+              break;
+            }
+            case 32: {
               int rawValue = input.readEnum();
               ProtocolProto.ProtocolType value = ProtocolProto.ProtocolType.valueOf(rawValue);
               if (value == null) {
-                unknownFields.mergeVarintField(3, rawValue);
+                unknownFields.mergeVarintField(4, rawValue);
               } else {
-                bitField0_ |= 0x00000004;
+                bitField0_ |= 0x00000008;
                 protocolType_ = value;
               }
               break;
             }
-            case 34: {
-              MessageProto.message.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+            case 42: {
+              RequestProto.request.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000010) == 0x00000010)) {
                 subBuilder = request_.toBuilder();
               }
-              request_ = input.readMessage(MessageProto.message.PARSER, extensionRegistry);
+              request_ = input.readMessage(RequestProto.request.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(request_);
                 request_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000008;
-              break;
-            }
-            case 42: {
-              MessageProto.message.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                subBuilder = response_.toBuilder();
-              }
-              response_ = input.readMessage(MessageProto.message.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(response_);
-                response_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000010;
               break;
             }
             case 50: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+              ResponseProto.response.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000020) == 0x00000020)) {
+                subBuilder = response_.toBuilder();
+              }
+              response_ = input.readMessage(ResponseProto.response.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(response_);
+                response_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000020;
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
               metaInfo_ = bs;
               break;
             }
@@ -437,73 +451,88 @@ public final class ProtocolProto {
       }
     }
 
-    public static final int PROTOCOLTYPE_FIELD_NUMBER = 3;
-    private ProtocolProto.ProtocolType protocolType_;
+    public static final int FINISHED_FIELD_NUMBER = 3;
+    private boolean finished_;
     /**
-     * <code>optional .ProtocolType protocolType = 3 [default = OTHER];</code>
+     * <code>optional bool finished = 3 [default = false];</code>
      */
-    public boolean hasProtocolType() {
+    public boolean hasFinished() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional .ProtocolType protocolType = 3 [default = OTHER];</code>
+     * <code>optional bool finished = 3 [default = false];</code>
+     */
+    public boolean getFinished() {
+      return finished_;
+    }
+
+    public static final int PROTOCOLTYPE_FIELD_NUMBER = 4;
+    private ProtocolProto.ProtocolType protocolType_;
+    /**
+     * <code>optional .ProtocolType protocolType = 4 [default = OTHER];</code>
+     */
+    public boolean hasProtocolType() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional .ProtocolType protocolType = 4 [default = OTHER];</code>
      */
     public ProtocolProto.ProtocolType getProtocolType() {
       return protocolType_;
     }
 
-    public static final int REQUEST_FIELD_NUMBER = 4;
-    private MessageProto.message request_;
+    public static final int REQUEST_FIELD_NUMBER = 5;
+    private RequestProto.request request_;
     /**
-     * <code>optional .message request = 4;</code>
+     * <code>optional .request request = 5;</code>
      */
     public boolean hasRequest() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional .message request = 4;</code>
-     */
-    public MessageProto.message getRequest() {
-      return request_;
-    }
-    /**
-     * <code>optional .message request = 4;</code>
-     */
-    public MessageProto.messageOrBuilder getRequestOrBuilder() {
-      return request_;
-    }
-
-    public static final int RESPONSE_FIELD_NUMBER = 5;
-    private MessageProto.message response_;
-    /**
-     * <code>optional .message response = 5;</code>
-     */
-    public boolean hasResponse() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>optional .message response = 5;</code>
+     * <code>optional .request request = 5;</code>
      */
-    public MessageProto.message getResponse() {
-      return response_;
+    public RequestProto.request getRequest() {
+      return request_;
     }
     /**
-     * <code>optional .message response = 5;</code>
+     * <code>optional .request request = 5;</code>
      */
-    public MessageProto.messageOrBuilder getResponseOrBuilder() {
-      return response_;
+    public RequestProto.requestOrBuilder getRequestOrBuilder() {
+      return request_;
     }
 
-    public static final int METAINFO_FIELD_NUMBER = 6;
-    private java.lang.Object metaInfo_;
+    public static final int RESPONSE_FIELD_NUMBER = 6;
+    private ResponseProto.response response_;
     /**
-     * <code>optional string MetaInfo = 6;</code>
+     * <code>optional .response response = 6;</code>
      */
-    public boolean hasMetaInfo() {
+    public boolean hasResponse() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional string MetaInfo = 6;</code>
+     * <code>optional .response response = 6;</code>
+     */
+    public ResponseProto.response getResponse() {
+      return response_;
+    }
+    /**
+     * <code>optional .response response = 6;</code>
+     */
+    public ResponseProto.responseOrBuilder getResponseOrBuilder() {
+      return response_;
+    }
+
+    public static final int METAINFO_FIELD_NUMBER = 7;
+    private java.lang.Object metaInfo_;
+    /**
+     * <code>optional string MetaInfo = 7;</code>
+     */
+    public boolean hasMetaInfo() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string MetaInfo = 7;</code>
      */
     public java.lang.String getMetaInfo() {
       java.lang.Object ref = metaInfo_;
@@ -520,7 +549,7 @@ public final class ProtocolProto {
       }
     }
     /**
-     * <code>optional string MetaInfo = 6;</code>
+     * <code>optional string MetaInfo = 7;</code>
      */
     public com.google.protobuf.ByteString
         getMetaInfoBytes() {
@@ -539,9 +568,10 @@ public final class ProtocolProto {
     private void initFields() {
       id_ = "";
       name_ = "Anonymous";
+      finished_ = false;
       protocolType_ = ProtocolProto.ProtocolType.OTHER;
-      request_ = MessageProto.message.getDefaultInstance();
-      response_ = MessageProto.message.getDefaultInstance();
+      request_ = RequestProto.request.getDefaultInstance();
+      response_ = ResponseProto.response.getDefaultInstance();
       metaInfo_ = "";
     }
     private byte memoizedIsInitialized = -1;
@@ -550,18 +580,6 @@ public final class ProtocolProto {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (hasRequest()) {
-        if (!getRequest().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasResponse()) {
-        if (!getResponse().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -576,16 +594,19 @@ public final class ProtocolProto {
         output.writeBytes(2, getNameBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeEnum(3, protocolType_.getNumber());
+        output.writeBool(3, finished_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeMessage(4, request_);
+        output.writeEnum(4, protocolType_.getNumber());
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeMessage(5, response_);
+        output.writeMessage(5, request_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeBytes(6, getMetaInfoBytes());
+        output.writeMessage(6, response_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getMetaInfoBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -606,19 +627,23 @@ public final class ProtocolProto {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, protocolType_.getNumber());
+          .computeBoolSize(3, finished_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, request_);
+          .computeEnumSize(4, protocolType_.getNumber());
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, response_);
+          .computeMessageSize(5, request_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(6, getMetaInfoBytes());
+          .computeMessageSize(6, response_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getMetaInfoBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -743,22 +768,24 @@ public final class ProtocolProto {
         bitField0_ = (bitField0_ & ~0x00000001);
         name_ = "Anonymous";
         bitField0_ = (bitField0_ & ~0x00000002);
-        protocolType_ = ProtocolProto.ProtocolType.OTHER;
+        finished_ = false;
         bitField0_ = (bitField0_ & ~0x00000004);
+        protocolType_ = ProtocolProto.ProtocolType.OTHER;
+        bitField0_ = (bitField0_ & ~0x00000008);
         if (requestBuilder_ == null) {
-          request_ = MessageProto.message.getDefaultInstance();
+          request_ = RequestProto.request.getDefaultInstance();
         } else {
           requestBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         if (responseBuilder_ == null) {
-          response_ = MessageProto.message.getDefaultInstance();
+          response_ = ResponseProto.response.getDefaultInstance();
         } else {
           responseBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000010);
-        metaInfo_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
+        metaInfo_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -798,25 +825,29 @@ public final class ProtocolProto {
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.protocolType_ = protocolType_;
+        result.finished_ = finished_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
+        }
+        result.protocolType_ = protocolType_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
         }
         if (requestBuilder_ == null) {
           result.request_ = request_;
         } else {
           result.request_ = requestBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
         }
         if (responseBuilder_ == null) {
           result.response_ = response_;
         } else {
           result.response_ = responseBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
         }
         result.metaInfo_ = metaInfo_;
         result.bitField0_ = to_bitField0_;
@@ -845,6 +876,9 @@ public final class ProtocolProto {
           name_ = other.name_;
           onChanged();
         }
+        if (other.hasFinished()) {
+          setFinished(other.getFinished());
+        }
         if (other.hasProtocolType()) {
           setProtocolType(other.getProtocolType());
         }
@@ -855,7 +889,7 @@ public final class ProtocolProto {
           mergeResponse(other.getResponse());
         }
         if (other.hasMetaInfo()) {
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000040;
           metaInfo_ = other.metaInfo_;
           onChanged();
         }
@@ -864,18 +898,6 @@ public final class ProtocolProto {
       }
 
       public final boolean isInitialized() {
-        if (hasRequest()) {
-          if (!getRequest().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasResponse()) {
-          if (!getResponse().isInitialized()) {
-            
-            return false;
-          }
-        }
         return true;
       }
 
@@ -1050,54 +1072,86 @@ public final class ProtocolProto {
         return this;
       }
 
-      private ProtocolProto.ProtocolType protocolType_ = ProtocolProto.ProtocolType.OTHER;
+      private boolean finished_ ;
       /**
-       * <code>optional .ProtocolType protocolType = 3 [default = OTHER];</code>
+       * <code>optional bool finished = 3 [default = false];</code>
        */
-      public boolean hasProtocolType() {
+      public boolean hasFinished() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional .ProtocolType protocolType = 3 [default = OTHER];</code>
+       * <code>optional bool finished = 3 [default = false];</code>
+       */
+      public boolean getFinished() {
+        return finished_;
+      }
+      /**
+       * <code>optional bool finished = 3 [default = false];</code>
+       */
+      public Builder setFinished(boolean value) {
+        bitField0_ |= 0x00000004;
+        finished_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool finished = 3 [default = false];</code>
+       */
+      public Builder clearFinished() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        finished_ = false;
+        onChanged();
+        return this;
+      }
+
+      private ProtocolProto.ProtocolType protocolType_ = ProtocolProto.ProtocolType.OTHER;
+      /**
+       * <code>optional .ProtocolType protocolType = 4 [default = OTHER];</code>
+       */
+      public boolean hasProtocolType() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional .ProtocolType protocolType = 4 [default = OTHER];</code>
        */
       public ProtocolProto.ProtocolType getProtocolType() {
         return protocolType_;
       }
       /**
-       * <code>optional .ProtocolType protocolType = 3 [default = OTHER];</code>
+       * <code>optional .ProtocolType protocolType = 4 [default = OTHER];</code>
        */
       public Builder setProtocolType(ProtocolProto.ProtocolType value) {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         protocolType_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional .ProtocolType protocolType = 3 [default = OTHER];</code>
+       * <code>optional .ProtocolType protocolType = 4 [default = OTHER];</code>
        */
       public Builder clearProtocolType() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         protocolType_ = ProtocolProto.ProtocolType.OTHER;
         onChanged();
         return this;
       }
 
-      private MessageProto.message request_ = MessageProto.message.getDefaultInstance();
+      private RequestProto.request request_ = RequestProto.request.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          MessageProto.message, MessageProto.message.Builder, MessageProto.messageOrBuilder> requestBuilder_;
+          RequestProto.request, RequestProto.request.Builder, RequestProto.requestOrBuilder> requestBuilder_;
       /**
-       * <code>optional .message request = 4;</code>
+       * <code>optional .request request = 5;</code>
        */
       public boolean hasRequest() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional .message request = 4;</code>
+       * <code>optional .request request = 5;</code>
        */
-      public MessageProto.message getRequest() {
+      public RequestProto.request getRequest() {
         if (requestBuilder_ == null) {
           return request_;
         } else {
@@ -1105,9 +1159,9 @@ public final class ProtocolProto {
         }
       }
       /**
-       * <code>optional .message request = 4;</code>
+       * <code>optional .request request = 5;</code>
        */
-      public Builder setRequest(MessageProto.message value) {
+      public Builder setRequest(RequestProto.request value) {
         if (requestBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1117,32 +1171,32 @@ public final class ProtocolProto {
         } else {
           requestBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         return this;
       }
       /**
-       * <code>optional .message request = 4;</code>
+       * <code>optional .request request = 5;</code>
        */
       public Builder setRequest(
-          MessageProto.message.Builder builderForValue) {
+          RequestProto.request.Builder builderForValue) {
         if (requestBuilder_ == null) {
           request_ = builderForValue.build();
           onChanged();
         } else {
           requestBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         return this;
       }
       /**
-       * <code>optional .message request = 4;</code>
+       * <code>optional .request request = 5;</code>
        */
-      public Builder mergeRequest(MessageProto.message value) {
+      public Builder mergeRequest(RequestProto.request value) {
         if (requestBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008) &&
-              request_ != MessageProto.message.getDefaultInstance()) {
+          if (((bitField0_ & 0x00000010) == 0x00000010) &&
+              request_ != RequestProto.request.getDefaultInstance()) {
             request_ =
-              MessageProto.message.newBuilder(request_).mergeFrom(value).buildPartial();
+              RequestProto.request.newBuilder(request_).mergeFrom(value).buildPartial();
           } else {
             request_ = value;
           }
@@ -1150,34 +1204,34 @@ public final class ProtocolProto {
         } else {
           requestBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         return this;
       }
       /**
-       * <code>optional .message request = 4;</code>
+       * <code>optional .request request = 5;</code>
        */
       public Builder clearRequest() {
         if (requestBuilder_ == null) {
-          request_ = MessageProto.message.getDefaultInstance();
+          request_ = RequestProto.request.getDefaultInstance();
           onChanged();
         } else {
           requestBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
       /**
-       * <code>optional .message request = 4;</code>
+       * <code>optional .request request = 5;</code>
        */
-      public MessageProto.message.Builder getRequestBuilder() {
-        bitField0_ |= 0x00000008;
+      public RequestProto.request.Builder getRequestBuilder() {
+        bitField0_ |= 0x00000010;
         onChanged();
         return getRequestFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .message request = 4;</code>
+       * <code>optional .request request = 5;</code>
        */
-      public MessageProto.messageOrBuilder getRequestOrBuilder() {
+      public RequestProto.requestOrBuilder getRequestOrBuilder() {
         if (requestBuilder_ != null) {
           return requestBuilder_.getMessageOrBuilder();
         } else {
@@ -1185,14 +1239,14 @@ public final class ProtocolProto {
         }
       }
       /**
-       * <code>optional .message request = 4;</code>
+       * <code>optional .request request = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          MessageProto.message, MessageProto.message.Builder, MessageProto.messageOrBuilder> 
+          RequestProto.request, RequestProto.request.Builder, RequestProto.requestOrBuilder> 
           getRequestFieldBuilder() {
         if (requestBuilder_ == null) {
           requestBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              MessageProto.message, MessageProto.message.Builder, MessageProto.messageOrBuilder>(
+              RequestProto.request, RequestProto.request.Builder, RequestProto.requestOrBuilder>(
                   getRequest(),
                   getParentForChildren(),
                   isClean());
@@ -1201,19 +1255,19 @@ public final class ProtocolProto {
         return requestBuilder_;
       }
 
-      private MessageProto.message response_ = MessageProto.message.getDefaultInstance();
+      private ResponseProto.response response_ = ResponseProto.response.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          MessageProto.message, MessageProto.message.Builder, MessageProto.messageOrBuilder> responseBuilder_;
+          ResponseProto.response, ResponseProto.response.Builder, ResponseProto.responseOrBuilder> responseBuilder_;
       /**
-       * <code>optional .message response = 5;</code>
+       * <code>optional .response response = 6;</code>
        */
       public boolean hasResponse() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional .message response = 5;</code>
+       * <code>optional .response response = 6;</code>
        */
-      public MessageProto.message getResponse() {
+      public ResponseProto.response getResponse() {
         if (responseBuilder_ == null) {
           return response_;
         } else {
@@ -1221,9 +1275,9 @@ public final class ProtocolProto {
         }
       }
       /**
-       * <code>optional .message response = 5;</code>
+       * <code>optional .response response = 6;</code>
        */
-      public Builder setResponse(MessageProto.message value) {
+      public Builder setResponse(ResponseProto.response value) {
         if (responseBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1233,32 +1287,32 @@ public final class ProtocolProto {
         } else {
           responseBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         return this;
       }
       /**
-       * <code>optional .message response = 5;</code>
+       * <code>optional .response response = 6;</code>
        */
       public Builder setResponse(
-          MessageProto.message.Builder builderForValue) {
+          ResponseProto.response.Builder builderForValue) {
         if (responseBuilder_ == null) {
           response_ = builderForValue.build();
           onChanged();
         } else {
           responseBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         return this;
       }
       /**
-       * <code>optional .message response = 5;</code>
+       * <code>optional .response response = 6;</code>
        */
-      public Builder mergeResponse(MessageProto.message value) {
+      public Builder mergeResponse(ResponseProto.response value) {
         if (responseBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010) &&
-              response_ != MessageProto.message.getDefaultInstance()) {
+          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+              response_ != ResponseProto.response.getDefaultInstance()) {
             response_ =
-              MessageProto.message.newBuilder(response_).mergeFrom(value).buildPartial();
+              ResponseProto.response.newBuilder(response_).mergeFrom(value).buildPartial();
           } else {
             response_ = value;
           }
@@ -1266,34 +1320,34 @@ public final class ProtocolProto {
         } else {
           responseBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         return this;
       }
       /**
-       * <code>optional .message response = 5;</code>
+       * <code>optional .response response = 6;</code>
        */
       public Builder clearResponse() {
         if (responseBuilder_ == null) {
-          response_ = MessageProto.message.getDefaultInstance();
+          response_ = ResponseProto.response.getDefaultInstance();
           onChanged();
         } else {
           responseBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
       /**
-       * <code>optional .message response = 5;</code>
+       * <code>optional .response response = 6;</code>
        */
-      public MessageProto.message.Builder getResponseBuilder() {
-        bitField0_ |= 0x00000010;
+      public ResponseProto.response.Builder getResponseBuilder() {
+        bitField0_ |= 0x00000020;
         onChanged();
         return getResponseFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .message response = 5;</code>
+       * <code>optional .response response = 6;</code>
        */
-      public MessageProto.messageOrBuilder getResponseOrBuilder() {
+      public ResponseProto.responseOrBuilder getResponseOrBuilder() {
         if (responseBuilder_ != null) {
           return responseBuilder_.getMessageOrBuilder();
         } else {
@@ -1301,14 +1355,14 @@ public final class ProtocolProto {
         }
       }
       /**
-       * <code>optional .message response = 5;</code>
+       * <code>optional .response response = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          MessageProto.message, MessageProto.message.Builder, MessageProto.messageOrBuilder> 
+          ResponseProto.response, ResponseProto.response.Builder, ResponseProto.responseOrBuilder> 
           getResponseFieldBuilder() {
         if (responseBuilder_ == null) {
           responseBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              MessageProto.message, MessageProto.message.Builder, MessageProto.messageOrBuilder>(
+              ResponseProto.response, ResponseProto.response.Builder, ResponseProto.responseOrBuilder>(
                   getResponse(),
                   getParentForChildren(),
                   isClean());
@@ -1319,13 +1373,13 @@ public final class ProtocolProto {
 
       private java.lang.Object metaInfo_ = "";
       /**
-       * <code>optional string MetaInfo = 6;</code>
+       * <code>optional string MetaInfo = 7;</code>
        */
       public boolean hasMetaInfo() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>optional string MetaInfo = 6;</code>
+       * <code>optional string MetaInfo = 7;</code>
        */
       public java.lang.String getMetaInfo() {
         java.lang.Object ref = metaInfo_;
@@ -1342,7 +1396,7 @@ public final class ProtocolProto {
         }
       }
       /**
-       * <code>optional string MetaInfo = 6;</code>
+       * <code>optional string MetaInfo = 7;</code>
        */
       public com.google.protobuf.ByteString
           getMetaInfoBytes() {
@@ -1358,36 +1412,36 @@ public final class ProtocolProto {
         }
       }
       /**
-       * <code>optional string MetaInfo = 6;</code>
+       * <code>optional string MetaInfo = 7;</code>
        */
       public Builder setMetaInfo(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
         metaInfo_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string MetaInfo = 6;</code>
+       * <code>optional string MetaInfo = 7;</code>
        */
       public Builder clearMetaInfo() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         metaInfo_ = getDefaultInstance().getMetaInfo();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string MetaInfo = 6;</code>
+       * <code>optional string MetaInfo = 7;</code>
        */
       public Builder setMetaInfoBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
         metaInfo_ = value;
         onChanged();
         return this;
@@ -1418,14 +1472,15 @@ public final class ProtocolProto {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016Protocol.proto\032\rMessage.proto\"\244\001\n\010prot" +
-      "ocol\022\n\n\002id\030\001 \001(\t\022\027\n\004name\030\002 \001(\t:\tAnonymou" +
-      "s\022*\n\014protocolType\030\003 \001(\0162\r.ProtocolType:\005" +
-      "OTHER\022\031\n\007request\030\004 \001(\0132\010.message\022\032\n\010resp" +
-      "onse\030\005 \001(\0132\010.message\022\020\n\010MetaInfo\030\006 \001(\t*N" +
-      "\n\014ProtocolType\022\010\n\004HDFS\020\001\022\t\n\005HBASE\020\002\022\t\n\005O" +
-      "THER\020\003\022\t\n\005SPARK\020\004\022\t\n\005KAFKA\020\005\022\010\n\004HIVE\020\006B\021" +
-      "B\rProtocolProtoH\001"
+      "\n\016Protocol.proto\032\rRequest.proto\032\016Respons" +
+      "e.proto\"\276\001\n\010protocol\022\n\n\002id\030\001 \001(\t\022\027\n\004name" +
+      "\030\002 \001(\t:\tAnonymous\022\027\n\010finished\030\003 \001(\010:\005fal" +
+      "se\022*\n\014protocolType\030\004 \001(\0162\r.ProtocolType:" +
+      "\005OTHER\022\031\n\007request\030\005 \001(\0132\010.request\022\033\n\010res" +
+      "ponse\030\006 \001(\0132\t.response\022\020\n\010MetaInfo\030\007 \001(\t" +
+      "*N\n\014ProtocolType\022\010\n\004HDFS\020\001\022\t\n\005HBASE\020\002\022\t\n" +
+      "\005OTHER\020\003\022\t\n\005SPARK\020\004\022\t\n\005KAFKA\020\005\022\010\n\004HIVE\020\006" +
+      "B\021B\rProtocolProtoH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1438,15 +1493,17 @@ public final class ProtocolProto {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          MessageProto.getDescriptor()
+          RequestProto.getDescriptor(),
+          ResponseProto.getDescriptor()
         }, assigner);
     internal_static_protocol_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_protocol_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_protocol_descriptor,
-        new java.lang.String[] { "Id", "Name", "ProtocolType", "Request", "Response", "MetaInfo", });
-    MessageProto.getDescriptor();
+        new java.lang.String[] { "Id", "Name", "Finished", "ProtocolType", "Request", "Response", "MetaInfo", });
+    RequestProto.getDescriptor();
+    ResponseProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

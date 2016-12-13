@@ -1,14 +1,16 @@
-import "Message.proto";
+import "Request.proto";
+import "Response.proto";
 option optimize_for = SPEED;
 option java_outer_classname = "ProtocolProto";
 
 message protocol{
     optional string id = 1 ;
     optional string name = 2 [default = "Anonymous"];
-    optional ProtocolType protocolType = 3 [default = OTHER];
-    optional message request = 4;
-    optional message response = 5;
-    optional string MetaInfo = 6;
+    optional bool finished = 3 [default = false];
+    optional ProtocolType protocolType = 4 [default = OTHER];
+    optional request request = 5;
+    optional response response = 6;
+    optional string MetaInfo = 7;
 }
 
 enum ProtocolType{
