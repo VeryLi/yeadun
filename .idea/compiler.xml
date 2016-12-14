@@ -22,10 +22,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="yeadun" />
+        <module name="platform-client" />
+        <module name="platform-common" />
+        <module name="platform-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="platform-client" target="1.7" />
+      <module name="platform-common" target="1.7" />
+      <module name="platform-server" target="1.7" />
       <module name="yeadun" target="1.5" />
     </bytecodeTargetLevel>
   </component>

@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/platform-client/platform-client.iml" filepath="$PROJECT_DIR$/platform-client/platform-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/platform-common/platform-common.iml" filepath="$PROJECT_DIR$/platform-common/platform-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/platform-server/platform-server.iml" filepath="$PROJECT_DIR$/platform-server/platform-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/yeadun.iml" filepath="$PROJECT_DIR$/yeadun.iml" />
     </modules>
   </component>
