@@ -1,7 +1,6 @@
 package com.yeadun.bigdata.platform.protocol;
 
 import com.yeadun.bigdata.platform.PlatformContext;
-import com.yeadun.bigdata.platform.util.LogUtil;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,7 +14,6 @@ public abstract class ProtocolConstructor {
     private ResponseProto.response.Builder respBuilder;
     private List<DataPairProto.DataPair> reqMessage;
     private List<DataPairProto.DataPair> respMessage;
-    private LogUtil logger = new LogUtil(ProtocolConstructor.class);
 
     /**
      * Client using this constructor.
@@ -32,8 +30,8 @@ public abstract class ProtocolConstructor {
         this.reqBuilder = this.builder.getRequestBuilder();
         this.respBuilder = this.builder.getResponseBuilder();
         this.builder.setProtocolType(type);
-        this.reqMessage = this.protocol.getRequest().getMessageBodyList();
-        this.respMessage = this.protocol.getResponse().getMessageBodyList();
+        this.reqMessage = this.reqBuilder.getMessageBodyList();
+        this.respMessage = this.reqBuilder.getMessageBodyList();
         genID();
     }
 
@@ -51,8 +49,8 @@ public abstract class ProtocolConstructor {
         this.reqBuilder = this.builder.getRequestBuilder();
         this.respBuilder = this.builder.getResponseBuilder();
         this.builder.setProtocolType(protocol.getProtocolType());
-        this.reqMessage = this.protocol.getRequest().getMessageBodyList();
-        this.respMessage = this.protocol.getResponse().getMessageBodyList();
+        this.reqMessage = this.reqBuilder.getMessageBodyList();
+        this.respMessage = this.respBuilder.getMessageBodyList();
     }
 
     private void genID(){
@@ -63,10 +61,19 @@ public abstract class ProtocolConstructor {
     }
 
     public void flush(){
+        flushProtocol();
+        this.ctx.setProtocol(this.protocol);
+    }
+
+    public ProtocolProto.protocol getProtocol(){
+        return this.protocol;
+    }
+
+    public ProtocolConstructor flushProtocol(){
         this.builder.setRequest(this.reqBuilder.build());
         this.builder.setResponse(this.respBuilder.build());
         this.protocol = this.builder.build();
-        this.ctx.setProtocol(this.protocol);
+        return this;
     }
 
     protected ProtocolConstructor setProtocolName(String name){

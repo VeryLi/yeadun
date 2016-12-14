@@ -5,9 +5,6 @@ import com.yeadun.bigdata.platform.util.PropUtil;
 
 import java.io.IOException;
 
-/**
- * Created by chen on 16-12-6.
- */
 public class PlatformConf {
 
     private LogUtil logger = new LogUtil(PlatformConf.class);
@@ -18,9 +15,8 @@ public class PlatformConf {
     public PlatformDefaultConf _server_port    = PlatformDefaultConf.SERVER_PORT;
     public PlatformDefaultConf _client_connect_timeout = PlatformDefaultConf.CLIENT_CONNECT_TIMEOUT;
     public PlatformDefaultConf _so_backlog     = PlatformDefaultConf.SO_BACKLOG;
-    public PlatformDefaultConf _kryo_max_total = PlatformDefaultConf.KRYO_MAX_TOTAL;
 
-    public PlatformConf(boolean usePlatformConf){
+    PlatformConf(boolean usePlatformConf){
         boolean usePlatformConf1 = true;
         try {
             String confPath = "conf/platform.conf";

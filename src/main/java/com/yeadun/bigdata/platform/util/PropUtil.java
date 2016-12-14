@@ -4,9 +4,6 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by chen on 16-12-5.
- */
 public class PropUtil {
 
     private LogUtil logger = new LogUtil(PropUtil.class);

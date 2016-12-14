@@ -1,8 +1,5 @@
 package com.yeadun.bigdata.platform;
 
-/**
- * Created by chen on 16-12-6.
- */
 public enum PlatformDefaultConf {
     // platform properties
     SERVER_HOST("localhost"),

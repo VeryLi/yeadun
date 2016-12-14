@@ -1,6 +1,5 @@
 package com.yeadun.bigdata.platform.server;
 
-import com.yeadun.bigdata.platform.PlatformContext;
 import com.yeadun.bigdata.platform.control.PlatformController;
 import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.util.LogUtil;
@@ -15,28 +14,25 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  */
 class ServerEventHandler extends ChannelInboundHandlerAdapter {
     private LogUtil logger = new LogUtil(ServerEventHandler.class);
-    private PlatformContext ctx;
     private ProtocolInfoUtil infoUtil;
-    ServerEventHandler(PlatformContext ctx){
-        this.ctx = ctx;
+    ServerEventHandler(){
         this.infoUtil = new ProtocolInfoUtil();
     }
 
     /**
      * receive Protocol contain ProtocolConstructor from Client, and handling.
      * @param ctx ChannelHandlerContext.
-     * @param req Protocol which contains ProtocolConstructor Message.
+     * @param req Request Protocol from client.
      * */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object req){
         ProtocolProto.protocol protocol = (ProtocolProto.protocol) req;
-        logger.info("server has received request from client. " + this.infoUtil.reqInfo(protocol));
-        PlatformController.passReqToWorker(protocol);
+        logger.info("server has received request from client, "
+                + this.infoUtil.reqInfo(protocol));
 
-        String key = protocol.getResponse().getMessageBodyList().get(0).getKey();
-        String val = protocol.getResponse().getMessageBodyList().get(0).getVal();
-        logger.info(key + " ---------- " + val);
-
+        // pass protocol to PlatformController to handle.
+        protocol = PlatformController.passReqToWorker(protocol);
+        // put result into channel.
         ctx.writeAndFlush(protocol);
     }
 

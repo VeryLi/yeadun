@@ -3,6 +3,7 @@ package com.yeadun.bigdata.platform.control;
 import com.yeadun.bigdata.platform.protocol.InvalidProtocolTypeException;
 import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.util.LogUtil;
+import com.yeadun.bigdata.platform.worker.OtherWorker;
 
 /**
  * PlatformController class is resolving ProtocolConstructor Message, according to it's type, distributing to
@@ -13,15 +14,15 @@ public class PlatformController {
     private ProtocolProto.ProtocolType type;
     private static LogUtil logger = new LogUtil(PlatformController.class);
 
-    public static void passReqToWorker(ProtocolProto.protocol protocol){
-        PlatformController controller = new PlatformController(protocol);
+    public static ProtocolProto.protocol passReqToWorker(ProtocolProto.protocol protocol){
         try {
-            controller.choseWork();
+            PlatformController controller = new PlatformController(protocol);
+            return controller.choseWork();
         } catch (InvalidProtocolTypeException e) {
             logger.err(e.getMessage());
             e.printStackTrace();
         }
-
+        return protocol;
     }
 
     private PlatformController(ProtocolProto.protocol protocol){
@@ -29,31 +30,48 @@ public class PlatformController {
         this.type = this.protocol.getProtocolType();
     }
 
-    private void choseWork() throws InvalidProtocolTypeException {
+    private ProtocolProto.protocol choseWork() throws InvalidProtocolTypeException {
         switch (this.type.getNumber()){
             case 1 :
-                hdfsWork();
+                return hdfsWork();
             case 2 :
-                hbaseWork();
+                return hbaseWork();
             case 3 :
-                otherWork();
+                return otherWork();
             case 4 :
-                sparkWork();
+                return sparkWork();
             case 5 :
-                kafkaWork();
+                return kafkaWork();
             case 6 :
-                hiveWork();
+                return hiveWork();
             default:
                 logger.err("This Type is not defined. ERROR [" + this.type + "]");
                 throw new InvalidProtocolTypeException("This Type is not defined. ERROR [" + type + "]");
         }
     }
 
-    private void hbaseWork(){}
-    private void hdfsWork(){}
-    private void hiveWork(){}
-    private void kafkaWork(){}
-    private void otherWork(){
+    private ProtocolProto.protocol hbaseWork(){
+        return null;
     }
-    private void sparkWork(){}
+
+    private ProtocolProto.protocol hdfsWork(){
+        return null;
+    }
+
+    private ProtocolProto.protocol hiveWork(){
+        return null;
+    }
+
+    private ProtocolProto.protocol kafkaWork(){
+        return null;
+    }
+
+    private ProtocolProto.protocol otherWork(){
+        OtherWorker worker = new OtherWorker(this.protocol);
+        return worker.execute();
+    }
+
+    private ProtocolProto.protocol sparkWork(){
+        return null;
+    }
 }

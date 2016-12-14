@@ -31,7 +31,7 @@ public class PlatformServer {
         ServerBootstrap srvBoot = new ServerBootstrap();
         srvBoot.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(new ServerChannelInitializer(this.ctx))
+                .childHandler(new ServerChannelInitializer())
                 .option(ChannelOption.SO_BACKLOG, soBacklog)
                 .option(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)

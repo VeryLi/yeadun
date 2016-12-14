@@ -2,7 +2,6 @@ package com.yeadun.bigdata.platform.client;
 
 import com.yeadun.bigdata.platform.PlatformContext;
 import com.yeadun.bigdata.platform.PlatformConf;
-import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.util.LogUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -17,13 +16,13 @@ public class PlatformClient {
     private String hostName = conf._server_host.getStrValue();
     private int timeout = conf._client_connect_timeout.getIntValue();
 
-    public void start(ProtocolProto.protocol protocol){
+    public void start(PlatformContext ctx){
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap boot = new Bootstrap();
         try {
             boot.group(group)
                     .channel(NioSocketChannel.class)
-                    .handler(new ClientChannelInitializer(protocol))
+                    .handler(new ClientChannelInitializer(ctx))
                     .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeout)
                     .option(ChannelOption.TCP_NODELAY, true);
         }catch(Exception e){

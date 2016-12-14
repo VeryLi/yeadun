@@ -5,9 +5,6 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.or.ObjectRenderer;
 import org.omg.CORBA.Object;
 
-/**
- * Created by chen on 16-11-30.
- */
 public class LogUtil {
     private Logger logger;
     public LogUtil(Class cls){

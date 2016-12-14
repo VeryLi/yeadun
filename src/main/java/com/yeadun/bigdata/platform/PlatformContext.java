@@ -1,14 +1,11 @@
 package com.yeadun.bigdata.platform;
 
 import com.yeadun.bigdata.platform.client.PlatformClient;
-import com.yeadun.bigdata.platform.control.PlatformController;
 import com.yeadun.bigdata.platform.protocol.ProtocolProto;
 import com.yeadun.bigdata.platform.server.PlatformServer;
 import com.yeadun.bigdata.platform.util.LogUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 
 public class PlatformContext {
     private PlatformConf conf;
@@ -54,7 +51,7 @@ public class PlatformContext {
             platformConextIsNotInitialization.printStackTrace();
         }
         PlatformClient pc = new PlatformClient();
-        pc.start(this.protocol);
+        pc.start(this);
     }
 
     public void startServer(){
