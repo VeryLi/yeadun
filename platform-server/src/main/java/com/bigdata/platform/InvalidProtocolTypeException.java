@@ -1,4 +1,4 @@
-package com.bigdata.platform.exception;
+package com.bigdata.platform;
 
 public class InvalidProtocolTypeException extends Exception {
     public InvalidProtocolTypeException(String msg){

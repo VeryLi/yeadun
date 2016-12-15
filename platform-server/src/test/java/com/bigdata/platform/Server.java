@@ -1,6 +1,5 @@
-package com.bigdata.platform.exception;
+package com.bigdata.platform;
 
-import com.bigdata.platform.ServerPlatformContext;
 import com.bigdata.platform.util.LogUtil;
 
 public class Server {

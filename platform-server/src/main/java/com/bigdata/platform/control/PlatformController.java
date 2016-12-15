@@ -1,6 +1,6 @@
 package com.bigdata.platform.control;
 
-import com.bigdata.platform.exception.InvalidProtocolTypeException;
+import com.bigdata.platform.InvalidProtocolTypeException;
 import com.bigdata.platform.util.LogUtil;
 import com.bigdata.platform.worker.OtherWorker;
 import com.bigdata.platform.protocol.ProtocolProto;

@@ -1,16 +1,15 @@
-package com.bigdata.platform.exception;
+package com.bigdata.platform;
 
 import com.bigdata.platform.client.ClientPlatformContext;
 import com.bigdata.platform.protocol.ResponseProto;
 import com.bigdata.platform.protocol.constructor.OtherProtocolConstructor;
 import com.bigdata.platform.util.LogUtil;
 
-/**
- * Client development demo.
- * */
-public class Client {
+import java.util.UUID;
 
-    private static LogUtil logger = new LogUtil(Client.class);
+public class PlatformClientMain {
+
+    private static LogUtil logger = new LogUtil(PlatformClientMain.class);
     public static void main(String[] args) throws Exception{
         // 1. create ClientPlatformContext.
         ClientPlatformContext ctx = new ClientPlatformContext();
@@ -19,12 +18,14 @@ public class Client {
         OtherProtocolConstructor opc = new OtherProtocolConstructor(ctx);
 
         // 3. use ProtocolConstructor to construct your Protocol and Request.
+        String key = UUID.randomUUID().toString().replace("-", "");
+        String values = UUID.randomUUID().toString().replace("-", "");
         opc.setProtocolName("OtherProtocol")
                 .setRequestName("RequsetName")
-                .putInputData("k", "v")
+                .putInputData(key, values)
                 .flush();
 
-        // 4. start PlatformClient, and send Request to PlatformServer.
+        // 4. start com.bigdata.platform.PlatformClientMain, and send Request to PlatformServer.
         ctx.send();
 
         // 5. when PlatformServer has handle Request,
@@ -32,9 +33,9 @@ public class Client {
         ResponseProto.response response = ctx.getProtocol().getResponse();
 
         String name = response.getMessageBodyList().get(0).getName();
-        String key = response.getMessageBodyList().get(0).getKey();
-        String values = response.getMessageBodyList().get(0).getVal();
-        System.out.println("Response message is -> [Response Name] " + name + ", [ResponseKey] " + key + ", [ResponseValue] " + values + ".");
-        logger.info("Response message is -> [Response Name] " + name + ", [ResponseKey] " + key + ", [ResponseValue] " + values + ".");
+        String key1 = response.getMessageBodyList().get(0).getKey();
+        String values1 = response.getMessageBodyList().get(0).getVal();
+        logger.info("Response message is -> [Response Name] " + name + ", [ResponseKey] " + key1 + ", [ResponseValue] " + values1 + ".");
     }
+
 }

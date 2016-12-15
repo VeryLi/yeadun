@@ -37,9 +37,9 @@ public class PlatformServer {
 
         try {
             // Bind and start to accept incoming connections.
-            logger.info("PlatformServer is starting. Address is " + this.hostName + ", port is " + this.port + ".");
+            logger.info("PlatformServerMain is starting. Address is " + this.hostName + ", port is " + this.port + ".");
             ChannelFuture cf = srvBoot.bind(this.hostName, this.port).sync();
-            logger.info("PlatformServer has been started successfully.");
+            logger.info("PlatformServerMain has been started successfully.");
 
             // Wait until the server socket is closed.
             cf.channel().closeFuture().sync();
@@ -47,7 +47,7 @@ public class PlatformServer {
             this.logger.err(e.getMessage());
             e.printStackTrace();
         }finally {
-            logger.info("PlatformServer is shutting down workGroup, bossGroup successful.");
+            logger.info("PlatformServerMain is shutting down workGroup, bossGroup successful.");
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
         }

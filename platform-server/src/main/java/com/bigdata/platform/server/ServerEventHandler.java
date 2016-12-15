@@ -33,6 +33,9 @@ class ServerEventHandler extends ChannelInboundHandlerAdapter {
         // pass protocol to PlatformController to handle.
         protocol = PlatformController.passReqToWorker(protocol);
         // put result into channel.
+        logger.info("[Server] Protocol -> "
+                + infoUtil.protoInfo(protocol) + ". Response -> "
+                + infoUtil.respInfo(protocol));
         ctx.writeAndFlush(protocol);
     }
 

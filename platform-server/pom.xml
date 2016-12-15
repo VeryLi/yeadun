@@ -30,7 +30,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>false</addClasspath>
-                            <mainClass>com.bigdata.platform.PlatformServer</mainClass>
+                            <mainClass>com.bigdata.platform.PlatformServerMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

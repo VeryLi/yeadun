@@ -1,6 +1,5 @@
 package com.bigdata.platform;
 
-import com.bigdata.platform.exception.PlatformContextIsNotInitialization;
 import com.bigdata.platform.protocol.ProtocolProto;
 import com.bigdata.platform.util.LogUtil;
 

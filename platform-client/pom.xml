@@ -31,6 +31,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>false</addClasspath>
+                            <mainClass>com.bigdata.platform.Client</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
