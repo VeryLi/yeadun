@@ -11,17 +11,13 @@ class Consumer implements Runnable {
         String threadName = Thread.currentThread().getName();
         Util.print(" --> " + threadName + " is Running !");
         synchronized (this.lock){
-            while(true){
-                try {
-                    // do sth.
-                    Util.print(threadName + " is doing something ... ");
-                    this.lock.wait();
-                    Util.print(threadName + " has been notified !");
-//                    break;
-                } catch (InterruptedException e) {
-                    Util.print(threadName + " is Interrupted !");
-                    break;
-                }
+            try {
+                // do sth.
+                Util.print(threadName + " is doing something ... ");
+                this.lock.wait();
+                Util.print(threadName + " has been notified !");
+            } catch (InterruptedException e) {
+                Util.print(threadName + " is Interrupted !");
             }
             Util.print(threadName + " END. ");
         }
