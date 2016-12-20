@@ -2,6 +2,10 @@ package com.platform.async;
 
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.locks.LockSupport;
 
 public class MainProcess {
     public static void main(String[] args){
@@ -20,8 +24,24 @@ public class MainProcess {
             e.printStackTrace();
         }
         t2.start();
+        CountDownLatch cdl = new CountDownLatch(10);
+        cdl.countDown();
+        LockSupport.park();
+        Util.print(cdl.getCount() + "");
 
-        Vector<Integer> vector = new Vector<Integer>();
+        RecursiveTask r = new RecursiveTask() {
+            @Override
+            protected Object compute() {
+                return null;
+            }
+        };
+        try {
+            r.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 //        t1.interrupt();
     }
 }

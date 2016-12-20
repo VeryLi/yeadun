@@ -25,12 +25,14 @@
         <module name="platform-client" />
         <module name="platform-common" />
         <module name="platform-server" />
+        <module name="platform-server-spark" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="platform-client" target="1.7" />
       <module name="platform-common" target="1.7" />
       <module name="platform-server" target="1.7" />
+      <module name="platform-server-spark" target="1.5" />
       <module name="yeadun" target="1.5" />
     </bytecodeTargetLevel>
   </component>
